@@ -7,6 +7,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"runtime"
 	"runtime/debug"
 	"strings"
 )
@@ -54,6 +55,7 @@ func main() {
 	setupSlog()
 
 	slog.Info("begin main",
+		"GOMAXPROCS", runtime.GOMAXPROCS(-1),
 		"buildInfoMap", buildInfoMap(),
 		"goEnvironVariables", goEnvironVariables(),
 	)
