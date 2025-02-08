@@ -16,5 +16,5 @@ jobs:
         uses: actions/checkout@v4
       - name: Run setup script
         run: ./setup.sh
-      - name: Run benchmark script
-        run: ./run.sh
+      - name: Run go benchmark script
+        run: ./run-go.sh

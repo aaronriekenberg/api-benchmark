@@ -2,7 +2,7 @@
 
 #set -x
 
-echo "begin run.sh"
+echo "begin run-go.sh"
 
 lscpu
 
