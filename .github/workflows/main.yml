@@ -6,7 +6,7 @@ on:
     branches: ["main"]
 
 jobs:
-  example-job:
+  run-benchmark:
     runs-on: ubuntu-latest
     defaults:
       run:
