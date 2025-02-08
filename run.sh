@@ -13,9 +13,9 @@ echo "before go build"
 go build
 echo "after go build"
 
-for NUM_CONNECTIONS in 100 200 400; do
+for NUM_CONNECTIONS in 100 200 400 800; do
 
-    for NUM_THREADS in 1 2 4; do
+    for NUM_THREADS in 1 2 4 8; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
