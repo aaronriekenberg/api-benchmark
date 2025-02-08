@@ -6,6 +6,9 @@ echo "begin run.sh"
 
 lscpu
 
+echo apt install -y nghttp2
+apt install -y nghttp2
+
 echo
 
 cd go-api
