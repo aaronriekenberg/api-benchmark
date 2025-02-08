@@ -21,8 +21,8 @@ GO_API_PID=$!
 
 echo "go-api running PID $GO_API_PID"
 
-echo "h2load --h1 -t8 -c8 -n1000000 'http://localhost:18080/health'"
-h2load --h1 -t8 -c8 -n1000000 'http://localhost:18080/health'
+echo "h2load --h1 -t16 -c16 -n1000000 'http://localhost:18080/health'"
+h2load --h1 -t16 -c16 -n1000000 'http://localhost:18080/health'
 
 echo ps -eLf -q $GO_API_PID
 ps -eLf -q $GO_API_PID
