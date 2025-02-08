@@ -23,7 +23,7 @@ func healthHandlerFunc() http.HandlerFunc {
 }
 
 func runHTTPServer() {
-	const addr = ":8080"
+	const addr = ":18080"
 
 	mux := http.NewServeMux()
 
