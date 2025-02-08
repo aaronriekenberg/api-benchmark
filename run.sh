@@ -22,6 +22,8 @@ for NUM_CONNECTIONS in 100 200 400; do
         ./go-api &
         GO_API_PID=$!
 
+        sleep 1
+
         echo "go-api running PID $GO_API_PID"
 
         echo "wrk --latency -t$NUM_THREADS -c$NUM_CONNECTIONS -d10s http://localhost:18080/health"
