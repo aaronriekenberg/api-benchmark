@@ -9,7 +9,9 @@ lscpu
 echo
 
 cd go-api
-go build -x
+echo "before go build"
+go build
+echo "after go build"
 
 ./go-api &
 GO_API_PID=$!
