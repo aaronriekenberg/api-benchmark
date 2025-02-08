@@ -13,25 +13,29 @@ echo "before go build"
 go build
 echo "after go build"
 
-for NUM_THREADS in 1 2 4; do
+for NUM_CONNECTIONS in 100 200 400; do
 
-    echo "NUM_THREADS=$NUM_THREADS"
+    for NUM_THREADS in 1 2 4; do
 
-    ./go-api &
-    GO_API_PID=$!
+        echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
-    echo "go-api running PID $GO_API_PID"
+        ./go-api &
+        GO_API_PID=$!
 
-    echo "wrk --latency -t$NUM_THREADS -c100 -d10s http://localhost:18080/health"
-    wrk --latency -t$NUM_THREADS -c100 -d10s http://localhost:18080/health
+        echo "go-api running PID $GO_API_PID"
 
-    echo ps -eLf -q $GO_API_PID
-    ps -eLf -q $GO_API_PID
+        echo "wrk --latency -t$NUM_THREADS -c$NUM_CONNECTIONS -d10s http://localhost:18080/health"
+        wrk --latency -t$NUM_THREADS -c$NUM_CONNECTIONS -d10s http://localhost:18080/health
 
-    echo ps -eo pid,user,rss,time -q $GO_API_PID
-    ps -eo pid,user,rss,time -q $GO_API_PID
+        echo ps -eLf -q $GO_API_PID
+        ps -eLf -q $GO_API_PID
 
-    echo kill $GO_API_PID
-    kill $GO_API_PID
+        echo ps -eo pid,user,rss,time -q $GO_API_PID
+        ps -eo pid,user,rss,time -q $GO_API_PID
+
+        echo kill $GO_API_PID
+        kill $GO_API_PID
+
+    done
 
 done
