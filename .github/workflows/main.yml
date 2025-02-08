@@ -13,6 +13,8 @@ jobs:
         working-directory: .
     steps:
       - name: Check out the repository to the runner
-        uses: actions/checkout@v4  
-      - name: Run a script
+        uses: actions/checkout@v4
+      - name: Run setup script
+        run: ./setup.sh
+      - name: Run benchmark script
         run: ./run.sh
