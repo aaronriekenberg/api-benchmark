@@ -43,10 +43,10 @@ for NUM_THREADS in 1 2 4 8; do
         RPS=$(cat wrk_output | grep 'Requests/sec:' | awk '{print $2}' )
         echo "RPS = $RPS"
 
-        REQUEST_P50=$(cat wrk_output | grep '50%' | awk '{print $2}' )
+        REQUEST_P50=$(cat wrk_output | grep -A5 'Latency Distribution' | grep '50%' | awk '{print $2}' )
         echo "REQUEST_P50 = $REQUEST_P50"
 
-        REQUEST_P99=$(cat wrk_output | grep '99%' | awk '{print $2}' )
+        REQUEST_P99=$(cat wrk_output | grep -A5 'Latency Distribution' | grep '99%' | awk '{print $2}' )
         echo "REQUEST_P99 = $REQUEST_P99"
 
         echo ps -eLf -q $API_PID
