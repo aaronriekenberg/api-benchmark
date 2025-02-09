@@ -8,11 +8,10 @@ lscpu
 
 echo
 
-OUTPUT_FILE=output/latest.csv
+OUTPUT_FILE=results/latest.csv
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 rm -f $OUTPUT_FILE
-touch $OUTPUT_FILE
 echo "NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN,REQUEST_SD,RSS_KB,CPU_TIME" >> $OUTPUT_FILE
 
 cd go-api
