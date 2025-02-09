@@ -9,6 +9,9 @@ lsmem
 
 echo
 
+OUTPUT_FILE=results/latest.csv
+echo "OUTPUT_FILE=$OUTPUT_FILE"
+
 TEST_NAME=rust-api
 
 cd rust-api
