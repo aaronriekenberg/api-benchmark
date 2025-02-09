@@ -23,9 +23,9 @@ echo "pwd = $(pwd)"
 
 DURATION=10s
 
-for NUM_THREADS in 4; do
+for NUM_THREADS in 1 2 4 8; do
 
-    for NUM_CONNECTIONS in 100; do
+    for NUM_CONNECTIONS in 100 200 400; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
