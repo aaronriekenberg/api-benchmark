@@ -47,8 +47,8 @@ echo "./oha-linux-amd64 --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://
 # CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
 # echo "CPU_TIME=$CPU_TIME"
 
-# echo kill $API_PID
-# kill $API_PID
+echo kill $API_PID
+kill $API_PID
 
 # echo "$TEST_NAME,$DURATION,$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_P50,$REQUEST_P99,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
 
