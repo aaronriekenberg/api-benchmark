@@ -3,7 +3,7 @@ use axum::{routing::get, Router};
 #[tokio::main]
 async fn main() {
     // build our application with a route
-    let app = Router::new().route("/health", get(handler));
+    let app = Router::new().route("/test", get(handler));
 
     // run it
     let listener = tokio::net::TcpListener::bind("127.0.0.1:18080")
@@ -14,5 +14,5 @@ async fn main() {
 }
 
 async fn handler() -> &'static str {
-    "all good"
+    "hello world"
 }

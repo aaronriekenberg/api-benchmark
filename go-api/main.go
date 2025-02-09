@@ -13,7 +13,7 @@ import (
 )
 
 func healthHandlerFunc() http.HandlerFunc {
-	const responseBodyString = "all good"
+	const responseBodyString = "hello world"
 
 	responseBodyBytes := []byte(responseBodyString)
 
@@ -28,7 +28,7 @@ func runHTTPServer() {
 
 	mux := http.NewServeMux()
 
-	mux.Handle("GET /health", healthHandlerFunc())
+	mux.Handle("GET /test", healthHandlerFunc())
 
 	slog.Info("starting server",
 		"addr", addr,
