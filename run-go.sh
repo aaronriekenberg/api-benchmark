@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#set -x
+set -e
 
 echo "begin run-go.sh"
 
@@ -15,7 +15,7 @@ echo "after go build"
 
 for NUM_CONNECTIONS in 100; do
 
-    for NUM_THREADS in 1; do
+    for NUM_THREADS in 16; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
@@ -26,14 +26,12 @@ for NUM_CONNECTIONS in 100; do
 
         echo "go-api running PID $API_PID"
 
-        rm -f wrk_output
-        echo "wrk --latency -t$NUM_THREADS -c$NUM_CONNECTIONS -d10s http://localhost:18080/health"
-        wrk --latency -t$NUM_THREADS -c$NUM_CONNECTIONS -d10s http://localhost:18080/health | tee wrk_output
+        rm -f h2load_output
+        echo "h2load -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1000 'http://localhost:18080/health'"
+        h2load -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1000 'http://localhost:18080/health'" 2>&1 | tee h2load_output
 
-        RPS=$(cat wrk_output | grep 'Requests/sec:' | awk '{print $2}' )
-        echo "RPS=$RPS"
-        P99=$(cat wrk_output | grep '99%' | awk '{print $2}' )
-        echo "P99=$P99"
+        echo "cat h2load_output"
+        cat h2load_output
 
         echo ps -eLf -q $API_PID
         ps -eLf -q $API_PID
