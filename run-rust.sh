@@ -21,6 +21,8 @@ echo "after cargo build"
 cd -
 echo "pwd = $(pwd)"
 
+NUM_REQUESTS=500000
+
 for NUM_THREADS in 4 8 16; do
 
     for NUM_CONNECTIONS in 100 200 400; do
@@ -35,8 +37,8 @@ for NUM_THREADS in 4 8 16; do
         echo "rust-api running PID $API_PID"
 
         rm -f h2load_output
-        echo "h2load --h1 -n500000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test'"
-        h2load --h1 -n500000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test' 2>&1 | tee h2load_output
+        echo "h2load --h1 -n$NUM_REQUESTS -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test'"
+        h2load --h1 -n$NUM_REQUESTS -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test' 2>&1 | tee h2load_output
 
         RPS=$(cat h2load_output | grep 'finished in' | awk '{print $4}' )
         echo "RPS = $RPS"
@@ -68,7 +70,7 @@ for NUM_THREADS in 4 8 16; do
         echo kill $API_PID
         kill $API_PID
 
-        echo "$TEST_NAME,$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD,$RSS_KB,$CPU_TIME" >> $OUTPUT_FILE
+        echo "$TEST_NAME,$NUM_REQUESTS,$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
 
         sleep 1
 
