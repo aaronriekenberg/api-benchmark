@@ -21,7 +21,7 @@ echo "after go build"
 cd -
 echo "pwd = $(pwd)"
 
-NUM_REQUESTS=500000
+NUM_REQUESTS=1000000
 
 for NUM_THREADS in 4 8 16; do
 
