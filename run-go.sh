@@ -13,9 +13,9 @@ echo "before go build"
 go build
 echo "after go build"
 
-for NUM_CONNECTIONS in 100 200 400; do
+for NUM_CONNECTIONS in 100; do
 
-    for NUM_THREADS in 8 16; do
+    for NUM_THREADS in 8; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
@@ -30,8 +30,14 @@ for NUM_CONNECTIONS in 100 200 400; do
         echo "h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test'"
         h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test' 2>&1 | tee h2load_output
 
-        # echo "cat h2load_output"
-        # cat h2load_output
+        RPS=$(cat h2load_output | grep 'finished in' | awk '{print $4}' )
+        echo "RPS = $RPS"
+
+        REQUEST_MAX=$(cat h2load_output | grep 'time for request: ' | awk '{print $4}' )
+        echo "REQUEST_MAX = $REQUEST_MAX"
+
+        REQUEST_MEAN=$(cat h2load_output | grep 'time for request: ' | awk '{print $5}' )
+        echo "REQUEST_MEAN = $REQUEST_MEAN"
 
         echo ps -eLf -q $API_PID
         ps -eLf -q $API_PID
@@ -50,6 +56,9 @@ for NUM_CONNECTIONS in 100 200 400; do
 
         echo kill $API_PID
         kill $API_PID
+
+        echo "NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN"
+        echo "$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN"
 
         sleep 1
 
