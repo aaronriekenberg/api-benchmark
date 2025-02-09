@@ -8,14 +8,20 @@ lscpu
 
 echo
 
+OUTPUT_FILE=output/latest.csv
+echo "OUTPUT_FILE=$OUTPUT_FILE"
+
+rm -f $OUTPUT_FILE
+echo "NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN,REQUEST_SD,RSS_KB,CPU_TIME" >> $OUTPUT_FILE
+
 cd go-api
 echo "before go build"
 go build
 echo "after go build"
 
-for NUM_THREADS in 1 2 4 8 16; do
+for NUM_THREADS in 8; do
 
-    for NUM_CONNECTIONS in 100 200 400; do
+    for NUM_CONNECTIONS in 100; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
@@ -60,11 +66,21 @@ for NUM_THREADS in 1 2 4 8 16; do
         echo kill $API_PID
         kill $API_PID
 
-        echo "CSV: NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN,REQUEST_SD,RSS_KB,CPU_TIME"
-        echo "$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD,$RSS_KB,$CPU_TIME"
+        echo "$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD,$RSS_KB,$CPU_TIME" >> $OUTPUT_FILE
 
         sleep 1
 
     done
 
 done
+
+echo "after tests cat $OUTPUT_FILE"
+cat $OUTPUT_FILE
+
+echo "final git commands"
+set -e
+
+git add $OUTPUT_FILE
+git status
+git commit -m 'results from github actions'
+git push -v

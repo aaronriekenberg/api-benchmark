@@ -4,6 +4,9 @@ on:
   # Runs on pushes targeting the default branch
   push:
     branches: ["main"]
+  # Ignore changes in folders that are affected by the auto commit.
+    paths-ignore: 
+      - 'results/**'
 
 jobs:
   run-benchmark:
