@@ -9,11 +9,11 @@ lsmem
 
 echo
 
-DURATION=10s
+DURATION=20s
 
-for NUM_THREADS in 1; do
+for NUM_THREADS in 1 2 4 8; do
 
-    for NUM_CONNECTIONS in 100; do
+    for NUM_CONNECTIONS in 100 200 400; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
@@ -40,7 +40,7 @@ for NUM_THREADS in 1; do
         echo ps -eLf -q $API_PID
         ps -eLf -q $API_PID
 
-        THREADS_IN_APP=$( ps -eLf -q $API_PID | grep -v PID | wc -l)
+        THREADS_IN_APP=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
         echo "THREADS_IN_APP=$THREADS_IN_APP"
 
         echo ps -eo pid,user,rss,time -q $API_PID
