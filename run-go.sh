@@ -51,8 +51,7 @@ for NUM_CONNECTIONS in 100 200 400; do
         echo kill $API_PID
         kill $API_PID
 
-        echo wait $API_PID
-        wait $API_PID
+        sleep 1
 
     done
 
