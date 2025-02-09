@@ -2,39 +2,27 @@
 
 set -e
 
-echo "begin run-rust.sh"
+echo "begin run-api-benchmark.sh"
 
 lscpu
 lsmem
 
 echo
 
-OUTPUT_FILE=results/latest.csv
-echo "OUTPUT_FILE=$OUTPUT_FILE"
-
-TEST_NAME=rust-api
-
-cd rust-api
-echo "before cargo build"
-cargo build --release
-echo "after cargo build"
-cd -
-echo "pwd = $(pwd)"
-
 DURATION=10s
 
-for NUM_THREADS in 1 2 4 8; do
+for NUM_THREADS in 1; do
 
-    for NUM_CONNECTIONS in 100 200 400; do
+    for NUM_CONNECTIONS in 100; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
-        ./rust-api/target/release/rust-api &
+        $API_NAME &
         API_PID=$!
 
         sleep 1
 
-        echo "rust-api running PID $API_PID"
+        echo "$TEST_NAME running PID $API_PID"
 
         rm -f wrk_output
         echo "wrk --latency -d$DURATION -t$NUM_THREADS -c$NUM_CONNECTIONS 'http://localhost:18080/test'"
@@ -70,6 +58,7 @@ for NUM_THREADS in 1 2 4 8; do
         echo "$TEST_NAME,$DURATION,$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_P50,$REQUEST_P99,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
 
         sleep 1
+
     done
 
 done

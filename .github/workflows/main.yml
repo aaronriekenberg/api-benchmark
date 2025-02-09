@@ -20,8 +20,4 @@ jobs:
       - name: Run setup script
         run: ./setup.sh
       - name: Run go benchmark script
-        run: ./run-go.sh
-      - name: Run rust benchmark script
-        run: ./run-rust.sh
-      - name: Commit results
-        run: ./commit-results.sh
+        run: ./run-benchmarks.sh
