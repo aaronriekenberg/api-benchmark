@@ -10,6 +10,9 @@ import (
 	"runtime"
 	"runtime/debug"
 	"strings"
+
+	"golang.org/x/net/http2"
+	"golang.org/x/net/http2/h2c"
 )
 
 func healthHandlerFunc() http.HandlerFunc {
@@ -34,11 +37,14 @@ func runHTTPServer() {
 		"addr", addr,
 	)
 
-	server := http.Server{
-		Handler: mux,
+	h2Server := &http2.Server{}
+	handler := h2c.NewHandler(mux, h2Server)
+
+	httpServer := http.Server{
+		Handler: handler,
 		Addr:    addr,
 	}
-	server.ListenAndServe()
+	httpServer.ListenAndServe()
 }
 
 func main() {
