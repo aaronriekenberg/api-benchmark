@@ -27,8 +27,8 @@ for NUM_CONNECTIONS in 100; do
         echo "go-api running PID $API_PID"
 
         rm -f h2load_output
-        echo "h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1000 'http://localhost:18080/health'"
-        h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1000 'http://localhost:18080/health' 2>&1 | tee h2load_output
+        echo "h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/health'"
+        h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/health' 2>&1 | tee h2load_output
 
         echo "cat h2load_output"
         cat h2load_output
