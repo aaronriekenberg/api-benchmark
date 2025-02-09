@@ -28,7 +28,7 @@ for NUM_CONNECTIONS in 100; do
 
         rm -f h2load_output
         echo "h2load -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1000 'http://localhost:18080/health'"
-        h2load -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1000 'http://localhost:18080/health'" 2>&1 | tee h2load_output
+        h2load -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1000 'http://localhost:18080/health' 2>&1 | tee h2load_output
 
         echo "cat h2load_output"
         cat h2load_output
