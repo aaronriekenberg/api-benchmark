@@ -5,14 +5,14 @@ set -e
 echo "begin run-go.sh"
 
 lscpu
+lsmem
 
 echo
 
 OUTPUT_FILE=results/latest.csv
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
-rm -f $OUTPUT_FILE
-echo "NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN,REQUEST_SD,RSS_KB,CPU_TIME" >> $OUTPUT_FILE
+TEST_NAME=go-api
 
 cd go-api
 echo "before go build"
@@ -68,7 +68,7 @@ for NUM_THREADS in 8; do
         echo kill $API_PID
         kill $API_PID
 
-        echo "$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD,$RSS_KB,$CPU_TIME" >> $OUTPUT_FILE
+        echo "$TEST_NAME,$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD,$RSS_KB,$CPU_TIME" >> $OUTPUT_FILE
 
         sleep 1
 
@@ -78,14 +78,3 @@ done
 
 echo "after tests cat $OUTPUT_FILE"
 cat $OUTPUT_FILE
-
-echo "final git commands"
-set -e
-
-git config --global user.email "aaron.riekenberg@gmail.com"
-git config --global user.name "Aaron Riekenberg"
-
-git add $OUTPUT_FILE
-git status
-git commit -m 'results from github actions autocommit'
-git push -v
