@@ -44,7 +44,7 @@ for NUM_THREADS in 1 2 4 8; do
         echo "RPS = $RPS"
 
         REQUEST_P50=$(cat wrk_output | grep '50%' | awk '{print $2}' )
-        echo "REQUEST_MEAN = $REQUEST_MEAN"
+        echo "REQUEST_P50 = $REQUEST_P50"
 
         REQUEST_P99=$(cat wrk_output | grep '99%' | awk '{print $2}' )
         echo "REQUEST_P99 = $REQUEST_P99"
