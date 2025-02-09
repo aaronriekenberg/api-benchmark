@@ -33,11 +33,14 @@ for NUM_CONNECTIONS in 100; do
         RPS=$(cat h2load_output | grep 'finished in' | awk '{print $4}' )
         echo "RPS = $RPS"
 
-        REQUEST_MAX=$(cat h2load_output | grep 'time for request: ' | awk '{print $4}' )
+        REQUEST_MAX=$(cat h2load_output | grep 'time for request: ' | awk '{print $5}' )
         echo "REQUEST_MAX = $REQUEST_MAX"
 
-        REQUEST_MEAN=$(cat h2load_output | grep 'time for request: ' | awk '{print $5}' )
+        REQUEST_MEAN=$(cat h2load_output | grep 'time for request: ' | awk '{print $6}' )
         echo "REQUEST_MEAN = $REQUEST_MEAN"
+
+        REQUEST_SD=$(cat h2load_output | grep 'time for request: ' | awk '{print $7}' )
+        echo "REQUEST_SD = $REQUEST_SD"
 
         echo ps -eLf -q $API_PID
         ps -eLf -q $API_PID
@@ -57,8 +60,8 @@ for NUM_CONNECTIONS in 100; do
         echo kill $API_PID
         kill $API_PID
 
-        echo "NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN"
-        echo "$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN"
+        echo "NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN,REQUEST_SD"
+        echo "$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD"
 
         sleep 1
 
