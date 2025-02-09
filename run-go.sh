@@ -51,8 +51,8 @@ for NUM_CONNECTIONS in 100; do
         echo ps -eo pid,user,rss,time -q $API_PID
         ps -eo pid,user,rss,time -q $API_PID
 
-        RSS_MB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
-        echo "RSS_MB=$RSS_MB"
+        RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
+        echo "RSS_KB=$RSS_KB"
 
         CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
         echo "CPU_TIME=$CPU_TIME"
@@ -60,8 +60,8 @@ for NUM_CONNECTIONS in 100; do
         echo kill $API_PID
         kill $API_PID
 
-        echo "NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN,REQUEST_SD"
-        echo "$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD"
+        echo "NUM_CONNECTIONS,NUM_THREADS,RPS,REQUEST_MAX,REQUEST_MEAN,REQUEST_SD,RSS_KB,CPU_TIME"
+        echo "$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_MAX,$REQUEST_MEAN,$REQUEST_SD,$RSS_KB,$CPU_TIME"
 
         sleep 1
 
