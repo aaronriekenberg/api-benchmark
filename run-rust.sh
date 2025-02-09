@@ -21,9 +21,9 @@ echo "after cargo build"
 cd -
 echo "pwd = $(pwd)"
 
-for NUM_THREADS in 8; do
+for NUM_THREADS in 4 8 16; do
 
-    for NUM_CONNECTIONS in 100; do
+    for NUM_CONNECTIONS in 100 200 400; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
@@ -35,8 +35,8 @@ for NUM_THREADS in 8; do
         echo "rust-api running PID $API_PID"
 
         rm -f h2load_output
-        echo "h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test'"
-        h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test' 2>&1 | tee h2load_output
+        echo "h2load --h1 -n500000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test'"
+        h2load --h1 -n500000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test' 2>&1 | tee h2load_output
 
         RPS=$(cat h2load_output | grep 'finished in' | awk '{print $4}' )
         echo "RPS = $RPS"
