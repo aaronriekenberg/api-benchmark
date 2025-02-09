@@ -18,6 +18,8 @@ cd go-api
 echo "before go build"
 go build
 echo "after go build"
+cd -
+echo "pwd = $(pwd)"
 
 for NUM_THREADS in 8; do
 
@@ -25,7 +27,7 @@ for NUM_THREADS in 8; do
 
         echo "NUM_CONNECTIONS=$NUM_CONNECTIONS NUM_THREADS=$NUM_THREADS"
 
-        ./go-api &
+        ./go-api/go-api &
         API_PID=$!
 
         sleep 1
