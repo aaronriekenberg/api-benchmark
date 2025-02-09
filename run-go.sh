@@ -82,7 +82,10 @@ cat $OUTPUT_FILE
 echo "final git commands"
 set -e
 
+git config --global user.email "aaron.riekenberg@gmail.com"
+git config --global user.name "Aaron Riekenberg"
+
 git add $OUTPUT_FILE
 git status
-git commit -m 'results from github actions'
+git commit -m 'results from github actions autocommit'
 git push -v
