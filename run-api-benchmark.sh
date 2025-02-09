@@ -16,8 +16,8 @@ sleep 1
 
 echo "$TEST_NAME running PID $API_PID"
 
-echo "oha-linux-amd64 --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test'"
-oha-linux-amd64 --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test'
+echo "./oha-linux-amd64 --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test'"
+./oha-linux-amd64 --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test'
 
 # rm -f wrk_output
 # echo "wrk --latency -d$DURATION -t$NUM_THREADS -c$NUM_CONNECTIONS 'http://localhost:18080/test'"
