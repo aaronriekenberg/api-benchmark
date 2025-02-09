@@ -30,8 +30,8 @@ for NUM_CONNECTIONS in 100 200 400; do
         echo "h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test'"
         h2load --h1 -n400000 -t$NUM_THREADS -c$NUM_CONNECTIONS -m1 'http://localhost:18080/test' 2>&1 | tee h2load_output
 
-        echo "cat h2load_output"
-        cat h2load_output
+        # echo "cat h2load_output"
+        # cat h2load_output
 
         echo ps -eLf -q $API_PID
         ps -eLf -q $API_PID
