@@ -34,4 +34,4 @@ export TEST_NAME=rust-api
 ./run-api-benchmark.sh
 
 # commit results
-./commit-results.sh
+# ./commit-results.sh
