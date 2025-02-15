@@ -41,8 +41,8 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo ps -eLf -q $API_PID
     ps -eLf -q $API_PID
 
-    THREADS_IN_APP=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
-    echo "THREADS_IN_APP=$THREADS_IN_APP"
+    API_THREADS=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
+    echo "API_THREADS=$API_THREADS"
 
     echo ps -eo pid,user,rss,time -q $API_PID
     ps -eo pid,user,rss,time -q $API_PID
@@ -56,7 +56,7 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo kill $API_PID
     kill $API_PID
 
-    echo "$TEST_NAME,$NUM_CONNECTIONS,$RPS,$REQUEST_P50,$REQUEST_P99,$REQUEST_P999,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
+    echo "$TEST_NAME,$NUM_CONNECTIONS,$RPS,$REQUEST_P50,$REQUEST_P99,$REQUEST_P999,$RSS_KB,$CPU_TIME,$API_THREADS" >> $OUTPUT_FILE
 
     sleep 1
 
