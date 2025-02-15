@@ -6,9 +6,9 @@ Benchmarks of 1 million HTTP requests to a REST API runnning in github actions.
 * [latest.md](https://github.com/aaronriekenberg/api-benchmark/blob/main/results/latest.md)
 
 # REST Server APIs:
-* go using builtin `net\http`
-* rust using `axum`
-* kotlin using `http4k` with Undertow server.
+* [go-api](https://github.com/aaronriekenberg/api-benchmark/tree/main/go-api) using builtin `net/http`
+* [rust-api](https://github.com/aaronriekenberg/api-benchmark/tree/main/rust-api) using `axum`
+* [kotlin-api](https://github.com/aaronriekenberg/api-benchmark/tree/main/kotlin-api) using `http4k` with Undertow server.
 
 # Benchmark tests:
 * Use [oha](https://crates.io/crates/oha) to make 1 million http requests
