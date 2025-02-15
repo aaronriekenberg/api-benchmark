@@ -54,7 +54,7 @@ for NUM_CONNECTIONS in 200; do
 
     RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
     echo "RSS_KB=$RSS_KB"
-    RSS_MB=$(bc <<< "scale=4; $RSS_KB / 1000")
+    RSS_MB=$(bc <<< "scale=1; $RSS_KB / 1000")
     echo "RSS_MB=$RSS_MB"
 
     CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
