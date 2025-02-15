@@ -36,7 +36,7 @@ echo "TOTAL_MEMORY=$TOTAL_MEMORY"
 echo "| $CPU_MODEL | $NUM_CPUS | $TOTAL_MEMORY |" >> $OUTPUT_FILE
 echo >> $OUTPUT_FILE
 
-echo '## Benchmark Tests' >> $OUTPUT_FILE
+echo '## Benchmarks' >> $OUTPUT_FILE
 echo '| Test Name | Connections | Requests per Second | P50 Millis | P99 Millis | P999 Millis | API Memory MB | API CPU Time | API Threads |' >> $OUTPUT_FILE
 echo '| --------- | ----------- | ------------------- | ---------- | ---------- | ----------- | ------------- | ------------ | ----------- |' >> $OUTPUT_FILE
 
