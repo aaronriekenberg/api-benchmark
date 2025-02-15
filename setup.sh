@@ -19,6 +19,13 @@ echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 rm -f $OUTPUT_FILE
 echo '# Results' >> $OUTPUT_FILE
+
+echo '## CPU Info' >> $OUTPUT_FILE
+echo '```' >> $OUTPUT_FILE
+lscpu | egrep '(Model name:|CPU\(s\):)' | grep -v NUMA >> $OUTPUT_FILE
+echo '```' >> $OUTPUT_FILE
+
+echo '## Benchmarks' >> $OUTPUT_FILE
 echo '| Test Name | Connections | Requests per Second | P50 Millis | P99 Millis | P999 Millis | API Memory MB | API CPU Time | API Threads |' >> $OUTPUT_FILE
 echo '| --------- | ----------- | ------------------- | ---------- | ---------- | ----------- | ------------- | ------------ | ----------- |' >> $OUTPUT_FILE
 

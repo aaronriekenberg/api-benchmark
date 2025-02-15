@@ -7,7 +7,8 @@ echo "begin run-api-benchmark.sh"
 lscpu
 lsmem
 
-for NUM_CONNECTIONS in 200 400 800; do
+# for NUM_CONNECTIONS in 200 400 800; do
+for NUM_CONNECTIONS in 200; do
 
     echo "NUM_CONNECTIONS=$NUM_CONNECTIONS"
 
