@@ -11,13 +11,13 @@ sudo apt install -y oha
 
 oha --version
 
-echo "java --version"
-java --version
+echo "java -XX:+PrintFlagsFinal -version"
+java -XX:+PrintFlagsFinal -version
 
 OUTPUT_FILE=results/latest.csv
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 rm -f $OUTPUT_FILE
-echo "TEST_NAME,RPS,REQUEST_P50,REQUEST_P99,RSS_KB,CPU_TIME,THREADS_IN_APP" >> $OUTPUT_FILE
+echo "TEST_NAME,RPS,REQUEST_P50,REQUEST_P99,REQUEST_P999,RSS_KB,CPU_TIME,THREADS_IN_APP" >> $OUTPUT_FILE
 echo "created CSV header OUTPUT_FILE=$OUTPUT_FILE"
 cat $OUTPUT_FILE

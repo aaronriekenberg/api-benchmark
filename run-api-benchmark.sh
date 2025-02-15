@@ -31,6 +31,9 @@ echo "REQUEST_P50 = $REQUEST_P50"
 REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p99' )
 echo "REQUEST_P99 = $REQUEST_P99"
 
+REQUEST_P999=$(cat oha_output.json | jq '.latencyPercentiles.p99.9' )
+echo "REQUEST_P999 = $REQUEST_P999"
+
 echo ps -eLf -q $API_PID
 ps -eLf -q $API_PID
 
@@ -49,7 +52,7 @@ echo "CPU_TIME=$CPU_TIME"
 echo kill $API_PID
 kill $API_PID
 
-echo "$TEST_NAME,$RPS,$REQUEST_P50,$REQUEST_P99,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
+echo "$TEST_NAME,$RPS,$REQUEST_P50,$REQUEST_P99,$REQUEST_P999,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
 
 # sleep 1
 
