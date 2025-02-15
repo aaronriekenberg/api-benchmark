@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-func healthHandlerFunc() http.HandlerFunc {
+func testHandlerFunc() http.HandlerFunc {
 	const responseBodyString = "hello world"
 
 	responseBodyBytes := []byte(responseBodyString)
@@ -28,7 +28,7 @@ func runHTTPServer() {
 
 	mux := http.NewServeMux()
 
-	mux.Handle("GET /test", healthHandlerFunc())
+	mux.Handle("GET /test", testHandlerFunc())
 
 	protocols := new(http.Protocols)
 	protocols.SetHTTP1(true)
