@@ -4,10 +4,12 @@ set -e
 
 echo "begin setup.sh"
 
-wget https://github.com/hatoo/oha/releases/download/v1.7.0/oha-linux-amd64
-chmod +x oha-linux-amd64
+echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ stable main" | sudo tee /etc/apt/sources.list.d/azlux.list
+sudo wget -O /usr/share/keyrings/azlux-archive-keyring.gpg https://azlux.fr/repo.gpg
+apt update -y
+apt install -y oha
 
-ls -altrh oha-linux-amd64
+oha --version
 
 # OUTPUT_FILE=results/latest.csv
 # echo "OUTPUT_FILE=$OUTPUT_FILE"
