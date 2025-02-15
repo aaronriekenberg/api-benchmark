@@ -17,8 +17,8 @@ sleep 1
 echo "$TEST_NAME running PID $API_PID"
 
 rm -f oha_output.json
-echo "oha --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test'"
-oha --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test' | tee oha_output.json
+echo "oha --http2 -n 1000000 -c 4 -p 100 --no-tui --json 'http://localhost:18080/test'"
+oha --http2 -n 1000000 -c 4 -p 100 --no-tui --json 'http://localhost:18080/test' | tee oha_output.json
 
 echo
 
@@ -28,7 +28,7 @@ echo "RPS = $RPS"
 REQUEST_P50=$(cat oha_output.json | jq '.latencyPercentiles.p50' )
 echo "REQUEST_P50 = $REQUEST_P50"
 
-REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p50' )
+REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p99' )
 echo "REQUEST_P99 = $REQUEST_P99"
 
 echo ps -eLf -q $API_PID
