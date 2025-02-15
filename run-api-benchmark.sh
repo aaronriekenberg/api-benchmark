@@ -7,55 +7,60 @@ echo "begin run-api-benchmark.sh"
 lscpu
 lsmem
 
-echo "runnning API_COMMAND = $API_COMMAND"
+for NUM_CONNECTIONS in 200 400 800; do
 
-$API_COMMAND &
-API_PID=$!
+    echo "NUM_CONNECTIONS=$NUM_CONNECTIONS"
 
-sleep 1
+    echo "runnning API_COMMAND = $API_COMMAND"
 
-echo "$TEST_NAME running PID $API_PID"
+    $API_COMMAND &
+    API_PID=$!
 
-rm -f oha_output.json
-echo "oha --http-version=1.1 -n 1000000 -c 800 --no-tui --json 'http://localhost:18080/test'"
-oha --http-version=1.1 -n 1000000 -c 800 --no-tui --json 'http://localhost:18080/test' | tee oha_output.json
+    sleep 1
 
-echo
+    echo "$TEST_NAME running PID $API_PID"
 
-RPS=$(cat oha_output.json | jq '.rps.mean')
-echo "RPS = $RPS"
+    rm -f oha_output.json
+    echo "oha --http-version=1.1 -n 1000000 -c 800 --no-tui --json 'http://localhost:18080/test'"
+    oha --http-version=1.1 -n 1000000 -c 800 --no-tui --json 'http://localhost:18080/test' | tee oha_output.json
 
-REQUEST_P50=$(cat oha_output.json | jq '.latencyPercentiles.p50' )
-echo "REQUEST_P50 = $REQUEST_P50"
+    echo
 
-REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p99' )
-echo "REQUEST_P99 = $REQUEST_P99"
+    RPS=$(cat oha_output.json | jq '.rps.mean')
+    echo "RPS = $RPS"
 
-REQUEST_P999=$(cat oha_output.json | jq '.latencyPercentiles."p99.9"' )
-echo "REQUEST_P999 = $REQUEST_P999"
+    REQUEST_P50=$(cat oha_output.json | jq '.latencyPercentiles.p50' )
+    echo "REQUEST_P50 = $REQUEST_P50"
 
-echo ps -eLf -q $API_PID
-ps -eLf -q $API_PID
+    REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p99' )
+    echo "REQUEST_P99 = $REQUEST_P99"
 
-THREADS_IN_APP=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
-echo "THREADS_IN_APP=$THREADS_IN_APP"
+    REQUEST_P999=$(cat oha_output.json | jq '.latencyPercentiles."p99.9"' )
+    echo "REQUEST_P999 = $REQUEST_P999"
 
-echo ps -eo pid,user,rss,time -q $API_PID
-ps -eo pid,user,rss,time -q $API_PID
+    echo ps -eLf -q $API_PID
+    ps -eLf -q $API_PID
 
-RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
-echo "RSS_KB=$RSS_KB"
+    THREADS_IN_APP=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
+    echo "THREADS_IN_APP=$THREADS_IN_APP"
 
-CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
-echo "CPU_TIME=$CPU_TIME"
+    echo ps -eo pid,user,rss,time -q $API_PID
+    ps -eo pid,user,rss,time -q $API_PID
 
-echo kill $API_PID
-kill $API_PID
+    RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
+    echo "RSS_KB=$RSS_KB"
 
-echo "$TEST_NAME,$RPS,$REQUEST_P50,$REQUEST_P99,$REQUEST_P999,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
+    CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
+    echo "CPU_TIME=$CPU_TIME"
 
-# sleep 1
+    echo kill $API_PID
+    kill $API_PID
 
+    echo "$TEST_NAME,$NUM_CONNECTIONS,$RPS,$REQUEST_P50,$REQUEST_P99,$REQUEST_P999,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
+
+    sleep 1
+
+done
 
 echo "after tests cat $OUTPUT_FILE"
 cat $OUTPUT_FILE
