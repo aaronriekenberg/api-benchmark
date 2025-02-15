@@ -19,8 +19,8 @@ echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 rm -f $OUTPUT_FILE
 echo '# Results' >> $OUTPUT_FILE
-echo '| TEST_NAME | NUM_CONNECTIONS | REQUESTS_PER_SECOND | P50_SECONDS | P99_SECONDS | P999_SECONDS | API_RSS_MB | API_CPU_TIME | API_THREADS |' >> $OUTPUT_FILE
-echo '| --------- | --------------- | ------------------- | ----------- | ----------- | ------------ | ---------- | ------------ | ----------- |' >> $OUTPUT_FILE
+echo '| TEST_NAME | NUM_CONNECTIONS | REQUESTS_PER_SECOND | P50_MILLIS | P99_MILLIS | P999_MILLIS | API_RSS_MB | API_CPU_TIME | API_THREADS |' >> $OUTPUT_FILE
+echo '| --------- | --------------- | ------------------- | ---------- | ---------- | ----------- | ---------- | ------------ | ----------- |' >> $OUTPUT_FILE
 
 echo "created md header OUTPUT_FILE=$OUTPUT_FILE"
 cat $OUTPUT_FILE

@@ -27,15 +27,19 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo
 
     RPS=$(cat oha_output.json | jq '.rps.mean')
+    RPS=$(bc <<< "scale=1; $RPS / 1")
     echo "RPS = $RPS"
 
     REQUEST_P50=$(cat oha_output.json | jq '.latencyPercentiles.p50' )
+    REQUEST_P50=$(bc <<< "scale=4; $REQUEST_P50 * 1000 / 1")
     echo "REQUEST_P50 = $REQUEST_P50"
 
     REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p99' )
+    REQUEST_P99=$(bc <<< "scale=4; $REQUEST_P50 * 1000 / 1")
     echo "REQUEST_P99 = $REQUEST_P99"
 
     REQUEST_P999=$(cat oha_output.json | jq '.latencyPercentiles."p99.9"' )
+    REQUEST_P999=$(bc <<< "scale=4; $REQUEST_P50 * 1000 / 1")
     echo "REQUEST_P999 = $REQUEST_P999"
 
     echo ps -eLf -q $API_PID
