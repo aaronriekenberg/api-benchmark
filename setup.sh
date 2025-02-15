@@ -14,10 +14,13 @@ oha --version
 echo "java -XX:+PrintFlagsFinal -version"
 java -XX:+PrintFlagsFinal -version
 
-OUTPUT_FILE=results/latest.csv
+OUTPUT_FILE=results/latest.md
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 rm -f $OUTPUT_FILE
-echo "TEST_NAME,NUM_CONNECTIONS,REQUESTS_PER_SECOND,P50_SECONDS,P99_SECONDS,P999_SECONDS,API_RSS_KB,API_CPU_TIME,API_THREADS" >> $OUTPUT_FILE
-echo "created CSV header OUTPUT_FILE=$OUTPUT_FILE"
+echo '# Results' >> $OUTPUT_FILE
+echo '| TEST_NAME | NUM_CONNECTIONS | REQUESTS_PER_SECOND | P50_SECONDS | P99_SECONDS | P999_SECONDS | API_RSS_MB | API_CPU_TIME | API_THREADS |' >> $OUTPUT_FILE
+echo '| --------- | --------------- | ------------------- | ----------- | ----------- | ------------ | ---------- | ------------ | ----------- |' >> $OUTPUT_FILE
+
+echo "created md header OUTPUT_FILE=$OUTPUT_FILE"
 cat $OUTPUT_FILE

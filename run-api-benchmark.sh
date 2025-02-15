@@ -49,6 +49,8 @@ for NUM_CONNECTIONS in 200 400 800; do
 
     RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
     echo "RSS_KB=$RSS_KB"
+    RSS_MB=$(bc <<< "scale=4; $RSS_KB / 1000")
+    echo "RSS_MB=$RSS_MB"
 
     CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
     echo "CPU_TIME=$CPU_TIME"
@@ -56,7 +58,7 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo kill $API_PID
     kill $API_PID
 
-    echo "$TEST_NAME,$NUM_CONNECTIONS,$RPS,$REQUEST_P50,$REQUEST_P99,$REQUEST_P999,$RSS_KB,$CPU_TIME,$API_THREADS" >> $OUTPUT_FILE
+    echo "| $TEST_NAME | $NUM_CONNECTIONS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS" >> $OUTPUT_FILE
 
     sleep 1
 
