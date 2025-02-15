@@ -22,6 +22,7 @@ echo '# Results' >> $OUTPUT_FILE
 
 echo '## Hardware Info' >> $OUTPUT_FILE
 echo '| CPU Model | Num CPUs | Memory |' >> $OUTPUT_FILE
+echo '| --------- | -------- | ------ |' >> $OUTPUT_FILE
 
 CPU_MODEL=$(lscpu  | grep 'Model name' | cut -f2 -d ':' | xargs)
 echo "CPU_MODEL=$CPU_MODEL"
