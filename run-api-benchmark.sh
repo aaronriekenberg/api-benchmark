@@ -16,15 +16,12 @@ sleep 1
 
 echo "$TEST_NAME running PID $API_PID"
 
+rm -f oha_output.json
 echo "oha --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test'"
-oha --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test'
+oha --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test' | tee oha_output.json
 
-# rm -f wrk_output
-# echo "wrk --latency -d$DURATION -t$NUM_THREADS -c$NUM_CONNECTIONS 'http://localhost:18080/test'"
-# wrk --latency -d$DURATION -t$NUM_THREADS -c$NUM_CONNECTIONS 'http://localhost:18080/test' 2>&1 | tee wrk_output
-
-# RPS=$(cat wrk_output | grep 'Requests/sec:' | awk '{print $2}' )
-# echo "RPS = $RPS"
+RPS=$(cat oha_output.json | jq '.rps.mean')
+echo "RPS = $RPS"
 
 # REQUEST_P50=$(cat wrk_output | grep -A5 'Latency Distribution' | grep '50%' | awk '{print $2}' )
 # echo "REQUEST_P50 = $REQUEST_P50"
@@ -32,20 +29,20 @@ oha --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test
 # REQUEST_P99=$(cat wrk_output | grep -A5 'Latency Distribution' | grep '99%' | awk '{print $2}' )
 # echo "REQUEST_P99 = $REQUEST_P99"
 
-# echo ps -eLf -q $API_PID
-# ps -eLf -q $API_PID
+echo ps -eLf -q $API_PID
+ps -eLf -q $API_PID
 
-# THREADS_IN_APP=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
-# echo "THREADS_IN_APP=$THREADS_IN_APP"
+THREADS_IN_APP=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
+echo "THREADS_IN_APP=$THREADS_IN_APP"
 
-# echo ps -eo pid,user,rss,time -q $API_PID
-# ps -eo pid,user,rss,time -q $API_PID
+echo ps -eo pid,user,rss,time -q $API_PID
+ps -eo pid,user,rss,time -q $API_PID
 
-# RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
-# echo "RSS_KB=$RSS_KB"
+RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
+echo "RSS_KB=$RSS_KB"
 
-# CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
-# echo "CPU_TIME=$CPU_TIME"
+CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
+echo "CPU_TIME=$CPU_TIME"
 
 echo kill $API_PID
 kill $API_PID
