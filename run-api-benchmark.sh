@@ -7,9 +7,9 @@ echo "begin run-api-benchmark.sh"
 lscpu
 lsmem
 
-echo
+echo "runnning API_COMMAND = $API_COMMAND"
 
-$API_PATH &
+$API_COMMAND &
 API_PID=$!
 
 sleep 1

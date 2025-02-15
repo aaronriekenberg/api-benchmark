@@ -11,6 +11,9 @@ sudo apt install -y oha
 
 oha --version
 
+echo "java --version"
+java --version
+
 OUTPUT_FILE=results/latest.csv
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
