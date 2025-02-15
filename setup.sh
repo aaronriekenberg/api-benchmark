@@ -6,8 +6,8 @@ echo "begin setup.sh"
 
 echo "deb [signed-by=/usr/share/keyrings/azlux-archive-keyring.gpg] http://packages.azlux.fr/debian/ stable main" | sudo tee /etc/apt/sources.list.d/azlux.list
 sudo wget -O /usr/share/keyrings/azlux-archive-keyring.gpg https://azlux.fr/repo.gpg
-apt update -y
-apt install -y oha
+sudo apt update -y
+sudo apt install -y oha
 
 oha --version
 
