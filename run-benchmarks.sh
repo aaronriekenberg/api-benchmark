@@ -33,5 +33,5 @@ export TEST_NAME=go-api
 # export TEST_NAME=rust-api
 # ./run-api-benchmark.sh
 
-commit results
+# commit results
 ./commit-results.sh
