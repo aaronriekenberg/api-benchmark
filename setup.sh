@@ -20,15 +20,20 @@ echo "OUTPUT_FILE=$OUTPUT_FILE"
 rm -f $OUTPUT_FILE
 echo '# Results' >> $OUTPUT_FILE
 
-echo '## CPU Info' >> $OUTPUT_FILE
-echo '```' >> $OUTPUT_FILE
-lscpu | egrep '(Model name:|CPU\(s\):)' | grep -v NUMA >> $OUTPUT_FILE
-echo '```' >> $OUTPUT_FILE
+echo '## Hardware Info' >> $OUTPUT_FILE
+echo '| CPU Model | Num CPUs | Memory |' >> $OUTPUT_FILE
 
-echo '## Memory Info' >> $OUTPUT_FILE
-echo '```' >> $OUTPUT_FILE
-lsmem | grep 'Total online' >> $OUTPUT_FILE
-echo '```' >> $OUTPUT_FILE
+CPU_MODEL=$(lscpu  | grep 'Model name' | cut -f2 -d ':' | xargs)
+echo "CPU_MODEL=$CPU_MODEL"
+
+NUM_CPUS=$(lscpu | grep 'CPU(s):' | grep -v NUMA  | cut -f2 -d ':' | xargs)
+echo "NUM_CPUS=$NUM_CPUS"
+
+TOTAL_MEMORY=$(lsmem  |grep 'Total online' | cut -f2 -d':' | xargs)
+echo "TOTAL_MEMORY=$TOTAL_MEMORY"
+
+echo "| $CPU_MODEL | $NUM_CPUS | $TOTAL_MEMORY |" >> $OUTPUT_FILE
+echo >> $OUTPUT_FILE
 
 echo '## Benchmark Tests' >> $OUTPUT_FILE
 echo '| Test Name | Connections | Requests per Second | P50 Millis | P99 Millis | P999 Millis | API Memory MB | API CPU Time | API Threads |' >> $OUTPUT_FILE
