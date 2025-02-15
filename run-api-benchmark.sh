@@ -31,7 +31,7 @@ echo "REQUEST_P50 = $REQUEST_P50"
 REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p99' )
 echo "REQUEST_P99 = $REQUEST_P99"
 
-REQUEST_P999=$(cat oha_output.json | jq '.latencyPercentiles.p99.9' )
+REQUEST_P999=$(cat oha_output.json | jq '.latencyPercentiles."p99.9"' )
 echo "REQUEST_P999 = $REQUEST_P999"
 
 echo ps -eLf -q $API_PID
