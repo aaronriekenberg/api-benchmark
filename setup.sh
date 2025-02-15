@@ -26,7 +26,9 @@ lscpu | egrep '(Model name:|CPU\(s\):)' | grep -v NUMA >> $OUTPUT_FILE
 echo '```' >> $OUTPUT_FILE
 
 echo '## Memory Info' >> $OUTPUT_FILE
-lsmem | grep 'Total online' | awk '{ print $4 }' >> $OUTPUT_FILE
+echo '```' >> $OUTPUT_FILE
+lsmem | grep 'Total online' >> $OUTPUT_FILE
+echo '```' >> $OUTPUT_FILE
 
 echo '## Benchmark Tests' >> $OUTPUT_FILE
 echo '| Test Name | Connections | Requests per Second | P50 Millis | P99 Millis | P999 Millis | API Memory MB | API CPU Time | API Threads |' >> $OUTPUT_FILE
