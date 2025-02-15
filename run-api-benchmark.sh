@@ -7,7 +7,8 @@ echo "begin run-api-benchmark.sh"
 lscpu
 lsmem
 
-for NUM_CONNECTIONS in 200 400 800; do
+#for NUM_CONNECTIONS in 200 400 800; do
+for NUM_CONNECTIONS in 200; do
 
     echo "NUM_CONNECTIONS=$NUM_CONNECTIONS"
 
@@ -35,11 +36,11 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo "REQUEST_P50 = $REQUEST_P50"
 
     REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p99' )
-    REQUEST_P99=$(bc <<< "scale=4; $REQUEST_P50 * 1000 / 1")
+    REQUEST_P99=$(bc <<< "scale=4; $REQUEST_P99 * 1000 / 1")
     echo "REQUEST_P99 = $REQUEST_P99"
 
     REQUEST_P999=$(cat oha_output.json | jq '.latencyPercentiles."p99.9"' )
-    REQUEST_P999=$(bc <<< "scale=4; $REQUEST_P50 * 1000 / 1")
+    REQUEST_P999=$(bc <<< "scale=4; $REQUEST_P999 * 1000 / 1")
     echo "REQUEST_P999 = $REQUEST_P999"
 
     echo ps -eLf -q $API_PID
@@ -62,7 +63,7 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo kill $API_PID
     kill $API_PID
 
-    echo "| $TEST_NAME | $NUM_CONNECTIONS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS" >> $OUTPUT_FILE
+    echo "| $TEST_NAME | $NUM_CONNECTIONS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS |" >> $OUTPUT_FILE
 
     sleep 1
 

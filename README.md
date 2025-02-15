@@ -3,10 +3,10 @@
 Benchmarks of 1 million HTTP requests to a REST API runnning in github actions.
 
 # Latest results:
-* [latest.csv](https://github.com/aaronriekenberg/api-benchmark/blob/main/results/latest.csv)
+* [latest.md](https://github.com/aaronriekenberg/api-benchmark/blob/main/results/latest.md)
 
 # REST Server APIs:
-* go using builtin `net.http`
+* go using builtin `net\http`
 * rust using `axum`
 * kotlin using `http4k` with Undertow server.
 
