@@ -9,7 +9,7 @@ lsmem
 
 echo
 
-$API_NAME &
+$API_PATH &
 API_PID=$!
 
 sleep 1
@@ -20,14 +20,16 @@ rm -f oha_output.json
 echo "oha --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test'"
 oha --http2 -n 1000000 -c 16 -p 100 --no-tui --json 'http://localhost:18080/test' | tee oha_output.json
 
+echo
+
 RPS=$(cat oha_output.json | jq '.rps.mean')
 echo "RPS = $RPS"
 
-# REQUEST_P50=$(cat wrk_output | grep -A5 'Latency Distribution' | grep '50%' | awk '{print $2}' )
-# echo "REQUEST_P50 = $REQUEST_P50"
+REQUEST_P50=$(cat oha_output.json | jq '.latencyPercentiles.p50' )
+echo "REQUEST_P50 = $REQUEST_P50"
 
-# REQUEST_P99=$(cat wrk_output | grep -A5 'Latency Distribution' | grep '99%' | awk '{print $2}' )
-# echo "REQUEST_P99 = $REQUEST_P99"
+REQUEST_P99=$(cat oha_output.json | jq '.latencyPercentiles.p50' )
+echo "REQUEST_P99 = $REQUEST_P99"
 
 echo ps -eLf -q $API_PID
 ps -eLf -q $API_PID
@@ -47,10 +49,10 @@ echo "CPU_TIME=$CPU_TIME"
 echo kill $API_PID
 kill $API_PID
 
-# echo "$TEST_NAME,$DURATION,$NUM_CONNECTIONS,$NUM_THREADS,$RPS,$REQUEST_P50,$REQUEST_P99,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
+echo "$TEST_NAME,$RPS,$REQUEST_P50,$REQUEST_P99,$RSS_KB,$CPU_TIME,$THREADS_IN_APP" >> $OUTPUT_FILE
 
 # sleep 1
 
 
-# echo "after tests cat $OUTPUT_FILE"
-# cat $OUTPUT_FILE
+echo "after tests cat $OUTPUT_FILE"
+cat $OUTPUT_FILE

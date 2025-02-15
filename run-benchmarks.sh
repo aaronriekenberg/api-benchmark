@@ -16,7 +16,7 @@ cd -
 echo "pwd = $(pwd)"
 
 # run go benchmarks
-export API_NAME='./go-api/go-api'
+export API_PATH='./go-api/go-api'
 export TEST_NAME=go-api
 ./run-api-benchmark.sh
 
@@ -33,5 +33,5 @@ export TEST_NAME=go-api
 # export TEST_NAME=rust-api
 # ./run-api-benchmark.sh
 
-# commit results
-# ./commit-results.sh
+commit results
+./commit-results.sh

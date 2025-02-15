@@ -2,7 +2,6 @@
 
 set -e
 
-OUTPUT_FILE=results/latest.csv
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 echo "begin commit-results.sh OUTPUT_FILE=$OUTPUT_FILE"
