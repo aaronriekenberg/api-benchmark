@@ -7,7 +7,8 @@ echo "begin run-api-benchmark.sh"
 lscpu
 lsmem
 
-for NUM_CONNECTIONS in 200 400 800; do
+# for NUM_CONNECTIONS in 200 400 800; do
+for NUM_CONNECTIONS in 200; do
 
     echo "NUM_CONNECTIONS=$NUM_CONNECTIONS"
 
@@ -25,6 +26,15 @@ for NUM_CONNECTIONS in 200 400 800; do
     oha --http-version=1.1 -n 1000000 -c $NUM_CONNECTIONS --no-tui --json 'http://localhost:18080/test' | tee oha_output.json
 
     echo
+
+    SUCCESS_RATE=$(cat oha_output.json | jq '.summary.successRate')
+    SUCCESS_RATE=$(bc <<< "scale=1; $SUCCESS_RATE * 100 / 1")
+    SUCCESS_RATE="${SUCCESS_RATE}%"
+    echo "SUCCESS_RATE = $SUCCESS_RATE"
+
+    DURATION_SECONDS=$(cat oha_output.json | jq '.summary.total')
+    DURATION_SECONDS=$(bc <<< "scale=1; $DURATION_SECONDS / 1")
+    echo "DURATION_SECONDS = $DURATION_SECONDS"
 
     RPS=$(cat oha_output.json | jq '.rps.mean')
     RPS=$(bc <<< "scale=1; $RPS / 1")
@@ -62,7 +72,7 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo kill $API_PID
     kill $API_PID
 
-    echo "| $TEST_NAME | $NUM_CONNECTIONS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS |" >> $OUTPUT_FILE
+    echo "| $TEST_NAME | $NUM_CONNECTIONS | $SUCCESS_RATE | $DURATION_SECONDS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS |" >> $OUTPUT_FILE
 
     sleep 1
 
