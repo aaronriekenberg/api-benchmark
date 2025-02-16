@@ -14,7 +14,7 @@ fun helloWorld(): HttpHandler {
 }
 
 fun main() {
-    println("begin main")
+    println("begin main availableProcessors=${Runtime.getRuntime().availableProcessors()}")
 
     val server = helloWorld().asServer(
         Undertow(
