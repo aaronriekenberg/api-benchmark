@@ -32,9 +32,9 @@ for NUM_CONNECTIONS in 200; do
     SUCCESS_RATE="${SUCCESS_RATE}%"
     echo "SUCCESS_RATE = $SUCCESS_RATE"
 
-    DURATION_SECONDS=$(cat oha_output.json | jq '.summary.total')
-    DURATION_SECONDS=$(bc <<< "scale=1; $DURATION_SECONDS / 1")
-    echo "DURATION_SECONDS = $DURATION_SECONDS"
+    TEST_SECONDS=$(cat oha_output.json | jq '.summary.total')
+    TEST_SECONDS=$(bc <<< "scale=1; $TEST_SECONDS / 1")
+    echo "TEST_SECONDS = $TEST_SECONDS"
 
     RPS=$(cat oha_output.json | jq '.rps.mean')
     RPS=$(bc <<< "scale=1; $RPS / 1")
@@ -72,7 +72,7 @@ for NUM_CONNECTIONS in 200; do
     echo kill $API_PID
     kill $API_PID
 
-    echo "| $TEST_NAME | $NUM_CONNECTIONS | $SUCCESS_RATE | $DURATION_SECONDS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS |" >> $OUTPUT_FILE
+    echo "| $TEST_NAME | $NUM_CONNECTIONS | $SUCCESS_RATE | $TEST_SECONDS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS |" >> $OUTPUT_FILE
 
     sleep 1
 
