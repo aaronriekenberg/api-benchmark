@@ -40,8 +40,8 @@ echo "| $CPU_MODEL | $NUM_CPUS | $TOTAL_MEMORY |" >> $OUTPUT_FILE
 echo >> $OUTPUT_FILE
 
 echo '## Benchmarks' >> $OUTPUT_FILE
-echo '| Test Name | Variables | Success Rate | Test Seconds | Requests per Second | P50 Millis | P99 Millis | P99.9 Millis | API Memory MB | API CPU Time | API Threads |' >> $OUTPUT_FILE
-echo '| --------- | --------- | ------------ | ------------ | ------------------- | ---------- | ---------- | ------------ | ------------- | ------------ | ----------- |' >> $OUTPUT_FILE
+echo '| Test Name | Conns | Success Rate | Test Seconds | Requests per Second | P50 Millis | P99 Millis | P99.9 Millis | API Memory MB | API CPU Time | API Threads |' >> $OUTPUT_FILE
+echo '| --------- | ----- | ------------ | ------------ | ------------------- | ---------- | ---------- | ------------ | ------------- | ------------ | ----------- |' >> $OUTPUT_FILE
 
 echo "created md header OUTPUT_FILE=$OUTPUT_FILE"
 cat $OUTPUT_FILE
