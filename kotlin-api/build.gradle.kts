@@ -61,8 +61,7 @@ tasks {
 dependencies {
     implementation(platform(Http4k.bom))
     implementation(Http4k.core)
-    implementation("org.http4k:http4k-server-helidon:_")
-    implementation("io.helidon.webserver:helidon-webserver-http2:_")
+    implementation(Http4k.server.undertow)
     implementation(Kotlin.stdlib)
     testImplementation(Http4k.testing.approval)
     testImplementation(Http4k.testing.hamkrest)
