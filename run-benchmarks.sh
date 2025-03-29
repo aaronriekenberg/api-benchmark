@@ -9,9 +9,9 @@ echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 # build go
 cd go-api
-echo "before go build"
+echo "$(date) before go build"
 go build
-echo "after go build"
+echo "$(date) after go build"
 cd -
 echo "pwd = $(pwd)"
 
@@ -24,9 +24,9 @@ export TEST_NAME=go
 echo "rustup update"
 rustup update
 cd rust-api
-echo "before cargo build"
+echo "$(date) before cargo build"
 cargo build --release
-echo "after cargo build"
+echo "$(date) after cargo build"
 cd -
 echo "pwd = $(pwd)"
 
@@ -37,12 +37,13 @@ export TEST_NAME=rust
 
 # build kotlin
 cd kotlin-api
-echo "before kotlin-api gradle build"
+echo "$(date) before kotlin-api gradle build"
 ./gradlew clean build
 echo "killall java"
 killall java
 cd -
-echo "finished gradle build"
+echo "$(date) after gradle build"
+echo "pwd = $(pwd)"
 
 # run kotlin benchmarks
 export API_COMMAND='java -jar ./kotlin-api/build/libs/kotlin-api.jar'
