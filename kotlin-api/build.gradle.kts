@@ -3,9 +3,9 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
 import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 
 plugins {
-    kotlin("jvm")
+    kotlin("jvm") version libs.versions.kotlin.core
     application
-    id("com.gradleup.shadow")
+    alias(libs.plugins.shadow.jar)
 }
 
 buildscript {
@@ -59,13 +59,7 @@ tasks {
 }
 
 dependencies {
-    implementation(platform(Http4k.bom))
-    implementation(Http4k.core)
-    implementation(Http4k.server.undertow)
-    implementation(Kotlin.stdlib)
-    testImplementation(Http4k.testing.approval)
-    testImplementation(Http4k.testing.hamkrest)
-    testImplementation(Testing.junit.jupiter.api)
-    testImplementation(Testing.junit.jupiter.engine)
+    implementation(libs.http4k.core)
+    implementation(libs.http4k.server.undertow)
 }
 
