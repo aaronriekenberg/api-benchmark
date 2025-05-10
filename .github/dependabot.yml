@@ -9,18 +9,26 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "all"
 
   - package-ecosystem: "gomod"
     directory: "/go-api/"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "all"
 
   - package-ecosystem: "cargo"
     directory: "/rust-api/"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "all"
 
   - package-ecosystem: "gradle"
     directory: "/kotlin-api/"
     schedule:
       interval: "daily"
+    allow:
+      - dependency-type: "all"
