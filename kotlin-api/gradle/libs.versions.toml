@@ -1,5 +1,5 @@
 [versions]
-http4k = "6.8.1.0"
+http4k = "6.9.0.0"
 kotlin-core = "2.1.20"
 shadow = "8.3.6"
 
