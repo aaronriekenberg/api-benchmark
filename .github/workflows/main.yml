@@ -1,12 +1,15 @@
 name: Run benchmark
 
-on:
+on: 
+  # workflow_dispatch enables manual trigger
+  workflow_dispatch
+
   # Runs on pushes targeting the default branch
-  push:
-    branches: ["main"]
-  # Ignore changes in folders that are affected by the auto commit.
-    paths-ignore: 
-      - 'results/**'
+  # push:
+  #   branches: ["main"]
+  # # Ignore changes in folders that are affected by the auto commit.
+  #   paths-ignore: 
+  #     - 'results/**'
 
 jobs:
   run-benchmark:
