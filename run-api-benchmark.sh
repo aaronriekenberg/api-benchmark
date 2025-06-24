@@ -21,8 +21,8 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo "$TEST_NAME running PID $API_PID"
 
     rm -f oha_output.json
-    echo "oha --http-version=1.1 -n 1000000 -c $NUM_CONNECTIONS --no-tui --json 'http://localhost:18080/test'"
-    oha --http-version=1.1 -n 1000000 -c $NUM_CONNECTIONS --no-tui --json 'http://localhost:18080/test' | tee oha_output.json
+    echo "oha --http-version=1.1 -n 1000000 -c $NUM_CONNECTIONS --no-tui --output-format json 'http://localhost:18080/test'"
+    oha --http-version=1.1 -n 1000000 -c $NUM_CONNECTIONS --no-tui --output-format json 'http://localhost:18080/test' | tee oha_output.json
 
     echo
 
