@@ -7,6 +7,15 @@ echo "begin run-benchmarks.sh"
 export OUTPUT_FILE=results/latest.md
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
+# node api
+echo "node --version"
+node --version
+
+# run node benchmarks
+export API_COMMAND='node node-api/server.mjs'
+export TEST_NAME=node
+./run-api-benchmark.sh
+
 # build go
 cd go-api
 echo "$(date) before go build"
