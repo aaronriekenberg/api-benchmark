@@ -11,9 +11,6 @@ sudo apt install -y oha
 
 oha --version
 
-echo "java -XX:+PrintFlagsFinal -version"
-java -XX:+PrintFlagsFinal -version
-
 OUTPUT_FILE=results/latest.md
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
