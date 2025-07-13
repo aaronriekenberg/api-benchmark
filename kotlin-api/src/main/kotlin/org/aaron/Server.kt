@@ -18,7 +18,7 @@ fun main() {
 
     val server = helloWorld().asServer(
         Undertow(
-            port = 18080,
+            port = 8080,
         )
     ).start()
 

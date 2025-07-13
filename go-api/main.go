@@ -24,7 +24,7 @@ func testHandlerFunc() http.HandlerFunc {
 }
 
 func runHTTPServer() {
-	const addr = ":18080"
+	const addr = ":8080"
 
 	mux := http.NewServeMux()
 
