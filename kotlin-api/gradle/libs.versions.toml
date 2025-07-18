@@ -1,12 +1,12 @@
 [versions]
 http4k = "6.15.1.0"
-kotlin-core = "2.1.20"
+kotlin = "2.1.20"
 shadow = "8.3.8"
 
 [libraries]
 http4k-core = { group = "org.http4k", name = "http4k-core", version.ref = "http4k" }
 http4k-server-undertow = { group = "org.http4k", name = "http4k-server-undertow", version.ref = "http4k" }
-kotlin-stdlib = { group = "org.jetbrains.kotlin", name = "kotlin-stdlib", version.ref = "kotlin-core" }
 
 [plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 shadow-jar = { id = "com.gradleup.shadow", version.ref = "shadow" }
