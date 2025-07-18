@@ -61,5 +61,6 @@ tasks {
 dependencies {
     implementation(libs.http4k.core)
     implementation(libs.http4k.server.undertow)
+    implementation(libs.kotlin.stdlib)
 }
 
