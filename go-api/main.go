@@ -30,19 +30,13 @@ func runHTTPServer() {
 
 	mux.Handle("GET /test", testHandlerFunc())
 
-	protocols := new(http.Protocols)
-	protocols.SetHTTP1(true)
-	protocols.SetUnencryptedHTTP2(true)
-
 	slog.Info("starting server",
 		"addr", addr,
-		"protocols", protocols.String(),
 	)
 
 	httpServer := http.Server{
-		Addr:      addr,
-		Handler:   mux,
-		Protocols: protocols,
+		Addr:    addr,
+		Handler: mux,
 	}
 	httpServer.ListenAndServe()
 }
