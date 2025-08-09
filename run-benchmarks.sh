@@ -29,6 +29,21 @@ export API_COMMAND='node node-api/server.mjs'
 export TEST_NAME=node
 ./run-api-benchmark.sh
 
+# build kotlin
+cd kotlin-api
+echo "$(date) before kotlin-api gradle build"
+./gradlew clean build
+echo "killall java"
+killall java
+cd -
+echo "$(date) after gradle build"
+echo "pwd = $(pwd)"
+
+# run kotlin benchmarks
+export API_COMMAND='java -jar ./kotlin-api/build/libs/kotlin-api.jar'
+export TEST_NAME=kotlin
+./run-api-benchmark.sh
+
 # build go
 cd go-api
 echo "$(date) before go build"
@@ -55,21 +70,6 @@ echo "pwd = $(pwd)"
 # run rust benchmarks
 export API_COMMAND='./rust-api/target/release/rust-api'
 export TEST_NAME=rust
-./run-api-benchmark.sh
-
-# build kotlin
-cd kotlin-api
-echo "$(date) before kotlin-api gradle build"
-./gradlew clean build
-echo "killall java"
-killall java
-cd -
-echo "$(date) after gradle build"
-echo "pwd = $(pwd)"
-
-# run kotlin benchmarks
-export API_COMMAND='java -jar ./kotlin-api/build/libs/kotlin-api.jar'
-export TEST_NAME=kotlin
 ./run-api-benchmark.sh
 
 # commit results
