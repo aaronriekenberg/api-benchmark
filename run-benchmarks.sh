@@ -7,6 +7,19 @@ echo "begin run-benchmarks.sh"
 export OUTPUT_FILE=results/latest.md
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
+# python api
+echo "python --version"
+python --version
+
+# python install tornado
+echo "pip install tornado"
+pip install tornado
+
+# run python benchmarks
+export API_COMMAND='python python-api/server.py'
+export TEST_NAME=python
+./run-api-benchmark.sh
+
 # node api
 echo "node --version"
 node --version
