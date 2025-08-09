@@ -55,7 +55,8 @@ func main() {
 	setupSlog()
 
 	slog.Info("begin main",
-		"GOMAXPROCS", runtime.GOMAXPROCS(-1),
+		"GOMAXPROCS", runtime.GOMAXPROCS(0),
+		"NumCPU", runtime.NumCPU(),
 		"buildInfoMap", buildInfoMap(),
 		"goEnvironVariables", goEnvironVariables(),
 	)
