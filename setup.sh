@@ -4,8 +4,8 @@ set -e
 
 echo "begin setup.sh"
 
-echo "wget https:////github.com/hatoo/oha/releases/latest/download/oha-linux-amd64"
-wget https:////github.com/hatoo/oha/releases/latest/download/oha-linux-amd64
+echo "wget https://github.com/hatoo/oha/releases/latest/download/oha-linux-amd64"
+wget https://github.com/hatoo/oha/releases/latest/download/oha-linux-amd64
 mv oha-linux-amd64 oha
 chmod +x ./oha
 
