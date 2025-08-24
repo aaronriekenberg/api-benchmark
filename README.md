@@ -1,6 +1,6 @@
 # api-benchmark
 
-Benchmarks of 1 million HTTP requests to a REST API runnning in github actions.
+Benchmarking 1 million HTTP requests to rust/go/kotlin/node/python REST APIs in GitHub actions. 
 
 # Latest results:
 * [latest.md](https://github.com/aaronriekenberg/api-benchmark/blob/main/results/latest.md)
