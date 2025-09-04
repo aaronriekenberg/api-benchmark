@@ -1,5 +1,5 @@
 [versions]
-http4k = "6.15.1.0"
+http4k = "6.16.0.0"
 kotlin = "2.2.10"
 shadow = "9.1.0"
 
