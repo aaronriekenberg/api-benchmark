@@ -1,6 +1,6 @@
 [versions]
 http4k = "6.17.0.0"
-kotlin = "2.2.10"
+kotlin = "2.2.20"
 shadow = "9.1.0"
 
 [libraries]
