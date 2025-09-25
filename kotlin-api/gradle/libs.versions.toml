@@ -1,7 +1,7 @@
 [versions]
 http4k = "6.18.0.1"
 kotlin = "2.2.20"
-shadow = "9.1.0"
+shadow = "9.2.1"
 
 [libraries]
 http4k-core = { group = "org.http4k", name = "http4k-core", version.ref = "http4k" }
