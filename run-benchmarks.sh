@@ -41,15 +41,20 @@ export TEST_NAME=go
 # build kotlin
 cd kotlin-api
 echo "$(date) before kotlin-api gradle build"
+
 ./gradlew clean build
+cd build/distributions
+tar xvf kotlin-api.tar
+cd ../../..
+
 echo "killall java"
 killall java
-cd -
+
 echo "$(date) after gradle build"
 echo "pwd = $(pwd)"
 
 # run kotlin benchmarks
-export API_COMMAND='java -jar ./kotlin-api/build/libs/kotlin-api.jar'
+export API_COMMAND='./kotlin-api/build/distributions/kotlin-api/bin/kotlin-api'
 export TEST_NAME=kotlin
 ./run-api-benchmark.sh
 

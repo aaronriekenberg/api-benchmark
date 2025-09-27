@@ -1,7 +1,6 @@
 [versions]
 http4k = "6.18.1.0"
 kotlin = "2.2.20"
-shadow = "9.2.1"
 
 [libraries]
 http4k-core = { group = "org.http4k", name = "http4k-core", version.ref = "http4k" }
@@ -9,4 +8,3 @@ http4k-server-helidon = { group = "org.http4k", name = "http4k-server-helidon", 
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
-shadow-jar = { id = "com.gradleup.shadow", version.ref = "shadow" }

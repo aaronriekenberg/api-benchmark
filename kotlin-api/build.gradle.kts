@@ -5,7 +5,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinJvmCompile
 plugins {
     alias(libs.plugins.kotlin.jvm)
     application
-    alias(libs.plugins.shadow.jar)
 }
 
 buildscript {
@@ -20,17 +19,6 @@ buildscript {
 
 application {
     mainClass = "org.aaron.ServerKt"
-}
-
-tasks {
-    shadowJar {
-        archiveBaseName.set(project.name)
-        archiveClassifier = null
-        archiveVersion = null
-        mergeServiceFiles()
-        dependsOn(distTar, distZip)
-        isZip64 = true
-    }
 }
 
 repositories {
