@@ -60,6 +60,6 @@ tasks {
 
 dependencies {
     implementation(libs.http4k.core)
-    implementation(libs.http4k.server.jetty)
+    implementation(libs.http4k.server.helidon)
 }
 
