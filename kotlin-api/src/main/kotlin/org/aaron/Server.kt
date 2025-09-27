@@ -22,5 +22,5 @@ fun main() {
         )
     ).start()
 
-    println("JettyLoom server started port ${server.port()}")
+    println("Helidon server started port ${server.port()}")
 }
