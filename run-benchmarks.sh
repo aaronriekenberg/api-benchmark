@@ -39,6 +39,9 @@ export TEST_NAME=go
 
 
 # build kotlin
+echo "java --version"
+java --version
+
 cd kotlin-api
 echo "$(date) before kotlin-api gradle build"
 
