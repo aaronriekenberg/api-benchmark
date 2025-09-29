@@ -4,7 +4,7 @@ kotlin = "2.2.20"
 
 [libraries]
 http4k-core = { group = "org.http4k", name = "http4k-core", version.ref = "http4k" }
-http4k-server-helidon = { group = "org.http4k", name = "http4k-server-helidon", version.ref = "http4k" }
+http4k-server-jetty = { group = "org.http4k", name = "http4k-server-jetty", version.ref = "http4k" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
