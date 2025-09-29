@@ -11,7 +11,6 @@ import org.http4k.server.asServer
 
 fun helloWorld(): HttpHandler {
     return routes("/test" bind GET to {
-        println("in handler thread isVirtual = ${Thread.currentThread().isVirtual}")
         Response(OK).body("hello world")
     })
 }
