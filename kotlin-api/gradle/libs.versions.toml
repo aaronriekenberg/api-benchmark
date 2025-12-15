@@ -1,5 +1,5 @@
 [versions]
-http4k = "6.23.1.0"
+http4k = "6.24.0.0"
 kotlin = "2.2.21"
 
 [libraries]
