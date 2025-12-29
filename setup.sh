@@ -12,7 +12,7 @@ chmod +x ./oha
 echo "oha --version"
 ./oha --version
 
-OUTPUT_FILE=results/table.md
+OUTPUT_FILE=results/raw.md
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 rm -f $OUTPUT_FILE

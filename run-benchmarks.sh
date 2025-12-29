@@ -4,7 +4,7 @@ set -e
 
 echo "begin run-benchmarks.sh"
 
-export OUTPUT_FILE=results/latest.md
+export OUTPUT_FILE=results/raw.md
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 
