@@ -34,16 +34,3 @@ jobs:
         run: ./setup.sh
       - name: Run benchmarks script
         run: ./run-benchmarks.sh
-      - name: Install Python deps for charting
-        run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install -r requirements.txt
-      - name: Generate benchmark chart
-        run: python3 tools/generate_chart.py
-      - name: Commit chart and updated markdown
-        run: |
-          git add results/latest.png results/latest.md || true
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git commit -m "Add benchmark chart" || echo "No changes to commit"
-          git push || echo "Push failed"
