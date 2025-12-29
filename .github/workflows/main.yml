@@ -34,3 +34,18 @@ jobs:
         run: ./setup.sh
       - name: Run benchmarks script
         run: ./run-benchmarks.sh
+      - name: Install matplotlib
+        run: pip install matplotlib
+      - name: Generate benchmark graphs
+        run: python3 generate-graphs.py
+      - name: Commit and push results
+        run: |
+          git config --global user.email "aaron.riekenberg@gmail.com"
+          git config --global user.name "Aaron Riekenberg"
+          git add results/rps.png results/memory.png results/threads.png results/latest.md
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m 'Add benchmark graphs and latest results'
+            git push -v
+          fi
