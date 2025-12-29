@@ -6,7 +6,7 @@
 | AMD EPYC 7763 64-Core Processor | 4 | 16G |
 
 ## Date and Time
-`Sun Dec 28 22:39:45 UTC 2025`
+Sun Dec 28 22:39:45 UTC 2025
 
 ## Bar Chart
 ![Benchmark chart](latest.png)
