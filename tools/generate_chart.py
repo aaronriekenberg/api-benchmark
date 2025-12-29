@@ -101,6 +101,11 @@ def generate_chart(md_path: Path, out_path: Path):
     print('Wrote chart to', out_path)
     # Also ensure latest.md contains an image link to the chart
     inject_image_link(md_path, out_path)
+    # Also inject a Mermaid fallback bar chart into the markdown
+    try:
+        inject_mermaid(md_path, chosen)
+    except Exception as e:
+        print('Failed to inject mermaid block:', e)
     return 0
 
 
