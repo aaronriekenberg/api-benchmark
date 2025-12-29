@@ -9,9 +9,11 @@ def parse_md_table(md_lines):
     # find header row for the benchmarks table
     header_idx = None
     for i, line in enumerate(md_lines):
-        if line.startswith('|') and 'Test Name' in line and 'Requests per Second' in line:
-            header_idx = i
-            break
+        # Look for table with Test Name and Requests per Second (or similar naming)
+        if line.startswith('|') and 'Test Name' in line:
+            if 'Requests per Second' in line or 'RPS' in line:
+                header_idx = i
+                break
     if header_idx is None:
         return []
 
@@ -113,13 +115,6 @@ def inject_image_link(md_path: Path, out_path: Path):
     img_md = f'![Benchmark chart]({img_rel})'
 
     lines = text.splitlines()
-    # Insert after the first title line (# Results)
-    for i, line in enumerate(lines):
-        if line.strip().startswith('#'):
-            insert_at = i + 1
-            break
-    else:
-        insert_at = 0
 
     # If chart link already exists, replace it
     if any('Benchmark chart' in l for l in lines):
@@ -133,8 +128,24 @@ def inject_image_link(md_path: Path, out_path: Path):
         print('Updated image link in', md_path)
         return
 
-    lines.insert(insert_at, '')
-    lines.insert(insert_at + 1, img_md)
+    # Insert after "## Bar Chart" section if it exists, else after first heading
+    insert_at = None
+    for i, line in enumerate(lines):
+        if line.strip() == '## Bar Chart':
+            insert_at = i + 1
+            break
+    
+    if insert_at is None:
+        # Fall back to inserting after the first heading
+        for i, line in enumerate(lines):
+            if line.strip().startswith('#'):
+                insert_at = i + 1
+                break
+    
+    if insert_at is None:
+        insert_at = 0
+
+    lines.insert(insert_at, img_md)
     md_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print('Inserted image link into', md_path)
 
