@@ -146,7 +146,8 @@ def generate_mermaid_block(chosen_rows):
     lines = []
     lines.append('```mermaid')
     lines.append("%%{init: {'theme': 'default'}}%%")
-    lines.append('bar')
+    # Use a `pie` chart for GitHub-renderable Mermaid fallback
+    lines.append('pie')
     lines.append("    title Requests per second (concurrency ~800)")
     for r in sorted(chosen_rows, key=lambda x: x.get('Test Name')):
         name = r.get('Test Name')
@@ -154,16 +155,16 @@ def generate_mermaid_block(chosen_rows):
         # ensure numeric value
         try:
             val = float(rps.replace(',', ''))
-            # Mermaid bar expects integer or float; format without exponent
+            # format number reasonably
             if val.is_integer():
                 val_s = str(int(val))
             else:
                 val_s = str(round(val, 2))
         except Exception:
             val_s = rps
-        # escape colon in name
-        safe_name = name.replace(':', '\\:')
-        lines.append(f'    {safe_name} : {val_s}')
+        # quote label to be safe
+        safe_label = '"' + name.replace('"', '\\"') + '"'
+        lines.append(f'    {safe_label} : {val_s}')
     lines.append('```')
     return '\n'.join(lines) + '\n'
 
