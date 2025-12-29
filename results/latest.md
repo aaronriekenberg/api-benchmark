@@ -1,6 +1,6 @@
 # Results
 
-![Benchmark chart](results/latest.png)
+![Benchmark chart](latest.png)
 
 
 `Sun Dec 28 22:39:45 UTC 2025`
