@@ -1,4 +1,6 @@
 # Results
+
+![Benchmark chart](results/latest.png)
 `Sun Dec 28 22:39:45 UTC 2025`
 ## Hardware Info
 | CPU Model | Num CPUs | Memory |
