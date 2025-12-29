@@ -17,8 +17,9 @@ echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 rm -f $OUTPUT_FILE
 echo '# Results' >> $OUTPUT_FILE
+
 echo '## Timestamp' >> $OUTPUT_FILE
-date | xargs echo -n >> $OUTPUT_FILE
+date | xargs echo >> $OUTPUT_FILE
 
 echo '## Hardware Info' >> $OUTPUT_FILE
 echo '| CPU Model | Num CPUs | Memory |' >> $OUTPUT_FILE
