@@ -1,13 +1,13 @@
 # Results
 
-![Benchmark chart](latest.png)
-
-
-`Sun Dec 28 22:39:45 UTC 2025`
 ## Hardware Info
 | CPU Model | Num CPUs | Memory |
 | --------- | -------- | ------ |
 | AMD EPYC 7763 64-Core Processor | 4 | 16G |
+
+![Benchmark chart](latest.png)
+
+`Sun Dec 28 22:39:45 UTC 2025`
 
 ## Benchmarks of 1 Million Requests
 | Test Name | HTTP Conns | Success Rate | Test Seconds | Requests per Second | P50 Millis | P99 Millis | P99.9 Millis | API Memory MB | API CPU Time | API Threads |
