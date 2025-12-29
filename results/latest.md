@@ -1,6 +1,17 @@
 # Results
 
 ![Benchmark chart](results/latest.png)
+
+```mermaid
+%%{init: {'theme': 'default'}}%%
+bar
+    title Requests per second (concurrency ~800)
+    go : 85476.1
+    kotlin : 65052.5
+    node : 25753.3
+    python : 7508.7
+    rust : 116943.9
+```
 `Sun Dec 28 22:39:45 UTC 2025`
 ## Hardware Info
 | CPU Model | Num CPUs | Memory |
