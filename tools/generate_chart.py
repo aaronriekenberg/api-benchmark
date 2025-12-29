@@ -99,13 +99,13 @@ def generate_chart(md_path: Path, out_path: Path):
     out_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(out_path, dpi=150)
     print('Wrote chart to', out_path)
-    # Also ensure latest.md contains an image link to the chart
-    inject_image_link(md_path, out_path)
-    # Also inject a Mermaid fallback bar chart into the markdown
+    # Remove any existing mermaid blocks (we want the PNG only)
     try:
-        inject_mermaid(md_path, chosen)
-    except Exception as e:
-        print('Failed to inject mermaid block:', e)
+        remove_mermaid_blocks(md_path)
+    except Exception:
+        pass
+    # Ensure latest.md contains an image link to the chart
+    inject_image_link(md_path, out_path)
     return 0
 
 
@@ -208,6 +208,31 @@ def inject_mermaid(md_path: Path, chosen_rows):
     lines.insert(insert_at + 1, block.rstrip('\n'))
     md_path.write_text('\n'.join(lines) + '\n', encoding='utf-8')
     print('Inserted mermaid block into', md_path)
+
+
+def remove_mermaid_blocks(md_path: Path):
+    text = md_path.read_text(encoding='utf-8')
+    if '```mermaid' not in text:
+        return
+    new_parts = []
+    i = 0
+    while i < len(text):
+        idx = text.find('```mermaid', i)
+        if idx == -1:
+            new_parts.append(text[i:])
+            break
+        new_parts.append(text[i:idx])
+        # find end of fenced block
+        end = text.find('```', idx + len('```mermaid'))
+        if end == -1:
+            # no closing fence; drop rest
+            break
+        i = end + len('```')
+    new_text = ''.join(new_parts)
+    # Remove possible extra blank lines
+    new_text = new_text.replace('\n\n\n', '\n\n')
+    md_path.write_text(new_text.strip() + '\n', encoding='utf-8')
+    print('Removed mermaid blocks from', md_path)
 
 
 if __name__ == '__main__':
