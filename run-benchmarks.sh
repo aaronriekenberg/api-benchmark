@@ -81,9 +81,9 @@ echo "pip install tornado"
 pip install tornado
 
 # run python benchmarks
-export API_COMMAND='python python-api/server.py'
-export TEST_NAME=python
-./run-api-benchmark.sh
+#export API_COMMAND='python python-api/server.py'
+#export TEST_NAME=python
+#./run-api-benchmark.sh
 
 
 # commit results
