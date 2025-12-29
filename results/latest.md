@@ -5,11 +5,13 @@
 | --------- | -------- | ------ |
 | AMD EPYC 7763 64-Core Processor | 4 | 16G |
 
-![Benchmark chart](latest.png)
-
+## Date and Time
 `Sun Dec 28 22:39:45 UTC 2025`
 
-## Benchmarks of 1 Million Requests
+## Bar Chart
+![Benchmark chart](latest.png)
+
+## Data Table for 1 million requests
 | Test Name | HTTP Conns | Success Rate | Test Seconds | Requests per Second | P50 Millis | P99 Millis | P99.9 Millis | API Memory MB | API CPU Time | API Threads |
 | --------- | ---------- | ------------ | ------------ | ------------------- | ---------- | ---------- | ------------ | ------------- | ------------ | ----------- |
 | rust | 200 | 100.0% | 9.0 | 110756.2 | 1.6618 | 4.5995 | 6.1144 | 8.4 | 00:00:17 | 5 |
