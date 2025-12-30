@@ -35,8 +35,8 @@ def parse_markdown_table(raw_file):
     # Skip header and separator lines
     data_start = header_idx + 2
     
-    # Parse data rows
-    results = defaultdict(lambda: {'rps': [], 'memory': [], 'threads': []})
+    # Parse data rows - keep connection levels separate
+    results = []
     
     for line in lines[data_start:]:
         if not line.startswith('|') or '---' in line:
@@ -56,43 +56,62 @@ def parse_markdown_table(raw_file):
             memory = float(parts[8].strip())
             threads = int(parts[10].strip())
             
-            key = test_name
-            results[key]['rps'].append(rps)
-            results[key]['memory'].append(memory)
-            results[key]['threads'].append(threads)
+            results.append({
+                'api': test_name,
+                'conns': http_conns,
+                'rps': rps,
+                'memory': memory,
+                'threads': threads
+            })
         except (ValueError, IndexError) as e:
             print(f"Warning: Could not parse row: {line}")
             continue
     
-    return dict(results)
+    return results
 
 
 def generate_rps_graph(results, output_file):
-    """Generate bar graph for requests per second."""
-    apis = sorted(results.keys())
+    """Generate grouped bar graph for requests per second."""
+    # Get unique APIs and connection levels
+    apis = sorted(set(r['api'] for r in results))
+    conns = sorted(set(r['conns'] for r in results))
     
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(14, 6))
     
     x = range(len(apis))
-    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8']
+    bar_width = 0.25
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
     
-    # Average RPS for each API
-    avg_rps = [sum(results[api]['rps']) / len(results[api]['rps']) for api in apis]
-    
-    bars = ax.bar(x, avg_rps, color=colors[:len(apis)], edgecolor='black', linewidth=1.5)
-    
-    # Add value labels on bars
-    for bar, value in zip(bars, avg_rps):
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height,
-                f'{value:,.0f}',
-                ha='center', va='bottom', fontsize=10, fontweight='bold')
+    # Create bars for each connection level
+    for i, conn in enumerate(conns):
+        rps_values = []
+        for api in apis:
+            # Find matching result
+            matching = [r for r in results if r['api'] == api and r['conns'] == conn]
+            if matching:
+                rps_values.append(matching[0]['rps'])
+            else:
+                rps_values.append(0)
+        
+        offset = (i - len(conns) / 2 + 0.5) * bar_width
+        bars = ax.bar([xi + offset for xi in x], rps_values, bar_width, 
+                      label=f'{conn} connections', color=colors[i], 
+                      edgecolor='black', linewidth=1)
+        
+        # Add value labels on bars
+        for bar, value in zip(bars, rps_values):
+            if value > 0:
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height,
+                        f'{value:,.0f}',
+                        ha='center', va='bottom', fontsize=8, fontweight='bold')
     
     ax.set_xlabel('API', fontsize=12, fontweight='bold')
     ax.set_ylabel('Requests Per Second', fontsize=12, fontweight='bold')
-    ax.set_title('API Benchmark - Requests Per Second (Average)', fontsize=14, fontweight='bold')
+    ax.set_title('API Benchmark - Requests Per Second', fontsize=14, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(apis, fontsize=11)
+    ax.legend(fontsize=10, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     
     plt.tight_layout()
@@ -102,31 +121,47 @@ def generate_rps_graph(results, output_file):
 
 
 def generate_memory_graph(results, output_file):
-    """Generate bar graph for API memory usage."""
-    apis = sorted(results.keys())
+    """Generate grouped bar graph for API memory usage."""
+    # Get unique APIs and connection levels
+    apis = sorted(set(r['api'] for r in results))
+    conns = sorted(set(r['conns'] for r in results))
     
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(14, 6))
     
     x = range(len(apis))
-    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8']
+    bar_width = 0.25
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
     
-    # Average memory for each API
-    avg_memory = [sum(results[api]['memory']) / len(results[api]['memory']) for api in apis]
-    
-    bars = ax.bar(x, avg_memory, color=colors[:len(apis)], edgecolor='black', linewidth=1.5)
-    
-    # Add value labels on bars
-    for bar, value in zip(bars, avg_memory):
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height,
-                f'{value:.1f} MB',
-                ha='center', va='bottom', fontsize=10, fontweight='bold')
+    # Create bars for each connection level
+    for i, conn in enumerate(conns):
+        memory_values = []
+        for api in apis:
+            # Find matching result
+            matching = [r for r in results if r['api'] == api and r['conns'] == conn]
+            if matching:
+                memory_values.append(matching[0]['memory'])
+            else:
+                memory_values.append(0)
+        
+        offset = (i - len(conns) / 2 + 0.5) * bar_width
+        bars = ax.bar([xi + offset for xi in x], memory_values, bar_width, 
+                      label=f'{conn} connections', color=colors[i], 
+                      edgecolor='black', linewidth=1)
+        
+        # Add value labels on bars
+        for bar, value in zip(bars, memory_values):
+            if value > 0:
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height,
+                        f'{value:.1f}',
+                        ha='center', va='bottom', fontsize=8, fontweight='bold')
     
     ax.set_xlabel('API', fontsize=12, fontweight='bold')
     ax.set_ylabel('Memory (MB)', fontsize=12, fontweight='bold')
-    ax.set_title('API Benchmark - Memory Usage (Average)', fontsize=14, fontweight='bold')
+    ax.set_title('API Benchmark - Memory Usage', fontsize=14, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(apis, fontsize=11)
+    ax.legend(fontsize=10, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     
     plt.tight_layout()
@@ -136,31 +171,47 @@ def generate_memory_graph(results, output_file):
 
 
 def generate_threads_graph(results, output_file):
-    """Generate bar graph for API thread count."""
-    apis = sorted(results.keys())
+    """Generate grouped bar graph for API thread count."""
+    # Get unique APIs and connection levels
+    apis = sorted(set(r['api'] for r in results))
+    conns = sorted(set(r['conns'] for r in results))
     
-    fig, ax = plt.subplots(figsize=(10, 6))
+    fig, ax = plt.subplots(figsize=(14, 6))
     
     x = range(len(apis))
-    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFA07A', '#98D8C8']
+    bar_width = 0.25
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
     
-    # Average threads for each API
-    avg_threads = [sum(results[api]['threads']) / len(results[api]['threads']) for api in apis]
-    
-    bars = ax.bar(x, avg_threads, color=colors[:len(apis)], edgecolor='black', linewidth=1.5)
-    
-    # Add value labels on bars
-    for bar, value in zip(bars, avg_threads):
-        height = bar.get_height()
-        ax.text(bar.get_x() + bar.get_width()/2., height,
-                f'{value:.1f}',
-                ha='center', va='bottom', fontsize=10, fontweight='bold')
+    # Create bars for each connection level
+    for i, conn in enumerate(conns):
+        threads_values = []
+        for api in apis:
+            # Find matching result
+            matching = [r for r in results if r['api'] == api and r['conns'] == conn]
+            if matching:
+                threads_values.append(matching[0]['threads'])
+            else:
+                threads_values.append(0)
+        
+        offset = (i - len(conns) / 2 + 0.5) * bar_width
+        bars = ax.bar([xi + offset for xi in x], threads_values, bar_width, 
+                      label=f'{conn} connections', color=colors[i], 
+                      edgecolor='black', linewidth=1)
+        
+        # Add value labels on bars
+        for bar, value in zip(bars, threads_values):
+            if value > 0:
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height,
+                        f'{value:.0f}',
+                        ha='center', va='bottom', fontsize=8, fontweight='bold')
     
     ax.set_xlabel('API', fontsize=12, fontweight='bold')
     ax.set_ylabel('Thread Count', fontsize=12, fontweight='bold')
-    ax.set_title('API Benchmark - Thread Usage (Average)', fontsize=14, fontweight='bold')
+    ax.set_title('API Benchmark - Thread Usage', fontsize=14, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(apis, fontsize=11)
+    ax.legend(fontsize=10, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     
     plt.tight_layout()
@@ -211,7 +262,11 @@ def main():
         print("ERROR: No benchmark data found in raw.md")
         sys.exit(1)
     
-    print(f"Found results for: {sorted(results.keys())}")
+    print(f"Found {len(results)} benchmark results")
+    apis = sorted(set(r['api'] for r in results))
+    conns = sorted(set(r['conns'] for r in results))
+    print(f"APIs: {apis}")
+    print(f"Connection levels: {conns}")
     
     # Generate graphs
     print("\nGenerating graphs...")
