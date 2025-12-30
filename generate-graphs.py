@@ -74,8 +74,13 @@ def parse_markdown_table(raw_file):
 
 def generate_rps_graph(results, output_file):
     """Generate grouped bar graph for requests per second."""
-    # Get unique APIs and connection levels
-    apis = sorted(set(r['api'] for r in results))
+    # Get unique APIs preserving order from results, and connection levels
+    apis = []
+    seen = set()
+    for r in results:
+        if r['api'] not in seen:
+            apis.append(r['api'])
+            seen.add(r['api'])
     conns = sorted(set(r['conns'] for r in results))
     
     fig, ax = plt.subplots(figsize=(14, 6))
@@ -124,7 +129,13 @@ def generate_rps_graph(results, output_file):
 
 def generate_memory_graph(results, output_file):
     """Generate grouped bar graph for API memory usage."""
-    apis = sorted(set(r['api'] for r in results))
+    # Get unique APIs preserving order from results, and connection levels
+    apis = []
+    seen = set()
+    for r in results:
+        if r['api'] not in seen:
+            apis.append(r['api'])
+            seen.add(r['api'])
     conns = sorted(set(r['conns'] for r in results))
 
     fig, ax = plt.subplots(figsize=(14, 6))
@@ -171,7 +182,13 @@ def generate_memory_graph(results, output_file):
 
 def generate_p99_graph(results, output_file):
     """Generate grouped bar graph for P99 response time (ms)."""
-    apis = sorted(set(r['api'] for r in results))
+    # Get unique APIs preserving order from results, and connection levels
+    apis = []
+    seen = set()
+    for r in results:
+        if r['api'] not in seen:
+            apis.append(r['api'])
+            seen.add(r['api'])
     conns = sorted(set(r['conns'] for r in results))
 
     fig, ax = plt.subplots(figsize=(14, 6))
@@ -249,8 +266,13 @@ def generate_latest_md(results_dir='results'):
 
 def generate_threads_graph(results, output_file):
     """Generate grouped bar graph for API thread count."""
-    # Get unique APIs and connection levels
-    apis = sorted(set(r['api'] for r in results))
+    # Get unique APIs preserving order from results, and connection levels
+    apis = []
+    seen = set()
+    for r in results:
+        if r['api'] not in seen:
+            apis.append(r['api'])
+            seen.add(r['api'])
     conns = sorted(set(r['conns'] for r in results))
     
     fig, ax = plt.subplots(figsize=(14, 6))
