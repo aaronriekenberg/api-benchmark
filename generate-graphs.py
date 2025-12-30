@@ -236,20 +236,18 @@ def generate_latest_md(results_dir='results'):
     """Generate latest.md with links to graph images."""
     latest_md = Path(results_dir) / 'latest.md'
 
-    content = """# Latest Benchmark Results
+    content = """# Latest Results
 
-## Performance Metrics
-
-### Requests Per Second
+## Requests Per Second
 ![Requests Per Second](rps.png)
 
-### API Memory Usage
+## API Memory Usage
 ![API Memory MB](memory.png)
 
-### P99 Response Time
+## P99 Response Time
 ![P99 Response Time](p99.png)
 
-### API Threads
+## API Threads
 ![API Threads](threads.png)
 
 
