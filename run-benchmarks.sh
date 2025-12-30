@@ -85,6 +85,4 @@ export API_COMMAND='python python-api/server.py'
 export TEST_NAME=python
 ./run-api-benchmark.sh
 
-
-# commit results
-./commit-results.sh
+echo "end run-benchmarks.sh"
