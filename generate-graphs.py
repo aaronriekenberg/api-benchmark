@@ -53,6 +53,7 @@ def parse_markdown_table(raw_file):
         
         try:
             rps = float(parts[4].strip())
+            p99 = float(parts[6].strip())
             memory = float(parts[8].strip())
             threads = int(parts[10].strip())
             
@@ -60,6 +61,7 @@ def parse_markdown_table(raw_file):
                 'api': test_name,
                 'conns': http_conns,
                 'rps': rps,
+                'p99': p99,
                 'memory': memory,
                 'threads': threads
             })
@@ -122,40 +124,36 @@ def generate_rps_graph(results, output_file):
 
 def generate_memory_graph(results, output_file):
     """Generate grouped bar graph for API memory usage."""
-    # Get unique APIs and connection levels
     apis = sorted(set(r['api'] for r in results))
     conns = sorted(set(r['conns'] for r in results))
-    
+
     fig, ax = plt.subplots(figsize=(14, 6))
-    
+
     x = range(len(apis))
     bar_width = 0.25
     colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
-    
-    # Create bars for each connection level
+
     for i, conn in enumerate(conns):
         memory_values = []
         for api in apis:
-            # Find matching result
             matching = [r for r in results if r['api'] == api and r['conns'] == conn]
             if matching:
                 memory_values.append(matching[0]['memory'])
             else:
                 memory_values.append(0)
-        
+
         offset = (i - len(conns) / 2 + 0.5) * bar_width
-        bars = ax.bar([xi + offset for xi in x], memory_values, bar_width, 
-                      label=f'{conn} connections', color=colors[i], 
+        bars = ax.bar([xi + offset for xi in x], memory_values, bar_width,
+                      label=f'{conn} connections', color=colors[i],
                       edgecolor='black', linewidth=1)
-        
-        # Add value labels on bars
+
         for bar, value in zip(bars, memory_values):
             if value > 0:
                 height = bar.get_height()
-                ax.text(bar.get_x() + bar.get_width()/2., height,
+                ax.text(bar.get_x() + bar.get_width() / 2., height,
                         f'{value:.1f}',
                         ha='center', va='bottom', fontsize=8, fontweight='bold')
-    
+
     ax.set_xlabel('API', fontsize=12, fontweight='bold')
     ax.set_ylabel('Memory (MB)', fontsize=12, fontweight='bold')
     ax.set_title('API Benchmark - Memory Usage', fontsize=14, fontweight='bold')
@@ -163,11 +161,89 @@ def generate_memory_graph(results, output_file):
     ax.set_xticklabels(apis, fontsize=11)
     ax.legend(fontsize=10, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
-    
+
     plt.tight_layout()
     plt.savefig(output_file, dpi=300, bbox_inches='tight')
     plt.close()
     print(f"Generated {output_file}")
+
+
+
+def generate_p99_graph(results, output_file):
+    """Generate grouped bar graph for P99 response time (ms)."""
+    apis = sorted(set(r['api'] for r in results))
+    conns = sorted(set(r['conns'] for r in results))
+
+    fig, ax = plt.subplots(figsize=(14, 6))
+
+    x = range(len(apis))
+    bar_width = 0.25
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
+
+    for i, conn in enumerate(conns):
+        p99_values = []
+        for api in apis:
+            matching = [r for r in results if r['api'] == api and r['conns'] == conn]
+            if matching:
+                p99_values.append(matching[0]['p99'])
+            else:
+                p99_values.append(0)
+
+        offset = (i - len(conns) / 2 + 0.5) * bar_width
+        bars = ax.bar([xi + offset for xi in x], p99_values, bar_width,
+                      label=f'{conn} connections', color=colors[i],
+                      edgecolor='black', linewidth=1)
+
+        for bar, value in zip(bars, p99_values):
+            if value > 0:
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width() / 2., height,
+                        f'{value:.2f}',
+                        ha='center', va='bottom', fontsize=8, fontweight='bold')
+
+    ax.set_xlabel('API', fontsize=12, fontweight='bold')
+    ax.set_ylabel('P99 (ms)', fontsize=12, fontweight='bold')
+    ax.set_title('API Benchmark - P99 Response Time', fontsize=14, fontweight='bold')
+    ax.set_xticks(x)
+    ax.set_xticklabels(apis, fontsize=11)
+    ax.legend(fontsize=10, loc='upper left')
+    ax.grid(axis='y', alpha=0.3, linestyle='--')
+
+    plt.tight_layout()
+    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Generated {output_file}")
+
+
+def generate_latest_md(results_dir='results'):
+    """Generate latest.md with links to graph images."""
+    latest_md = Path(results_dir) / 'latest.md'
+
+    content = """# Latest Benchmark Results
+
+## Performance Metrics
+
+### Requests Per Second
+![Requests Per Second](rps.png)
+
+### API Memory Usage
+![API Memory MB](memory.png)
+
+### API Threads
+![API Threads](threads.png)
+
+### P99 Response Time
+![P99 Response Time](p99.png)
+
+---
+*Graphs generated from benchmark results. See raw.md for detailed data.*
+"""
+
+    with open(latest_md, 'w') as f:
+        f.write(content)
+
+    print(f"Generated {latest_md}")
+    
 
 
 def generate_threads_graph(results, output_file):
@@ -220,31 +296,7 @@ def generate_threads_graph(results, output_file):
     print(f"Generated {output_file}")
 
 
-def generate_latest_md(results_dir='results'):
-    """Generate latest.md with links to graph images."""
-    latest_md = Path(results_dir) / 'latest.md'
-    
-    content = """# Latest Benchmark Results
 
-## Performance Metrics
-
-### Requests Per Second
-![Requests Per Second](rps.png)
-
-### API Memory Usage
-![API Memory MB](memory.png)
-
-### API Threads
-![API Threads](threads.png)
-
----
-*Graphs generated from benchmark results. See raw.md for detailed data.*
-"""
-    
-    with open(latest_md, 'w') as f:
-        f.write(content)
-    
-    print(f"Generated {latest_md}")
 
 
 def main():
@@ -273,6 +325,7 @@ def main():
     generate_rps_graph(results, str(results_dir / 'rps.png'))
     generate_memory_graph(results, str(results_dir / 'memory.png'))
     generate_threads_graph(results, str(results_dir / 'threads.png'))
+    generate_p99_graph(results, str(results_dir / 'p99.png'))
     
     # Generate latest.md
     print("\nGenerating latest.md...")
