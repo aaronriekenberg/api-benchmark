@@ -118,7 +118,7 @@ def generate_rps_graph(results, output_file):
     ax.set_title('API Benchmark - Requests Per Second', fontsize=14, fontweight='bold')
     ax.set_xticks(x)
     ax.set_xticklabels(apis, fontsize=11)
-    ax.legend(fontsize=10, loc='upper left')
+    ax.legend(fontsize=10, loc='upper right')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     
     plt.tight_layout()
