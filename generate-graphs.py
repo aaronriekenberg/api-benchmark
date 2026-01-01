@@ -233,25 +233,39 @@ def generate_p99_graph(results, output_file):
 
 
 def generate_latest_md(results_dir='results'):
-    """Generate latest.md with links to graph images."""
+    """Generate latest.md with links to graph images and copy timestamp from raw.md."""
     latest_md = Path(results_dir) / 'latest.md'
 
-    content = """# Latest Results
+    # read timestamp from raw.md (next non-empty line after '## Timestamp')
+    raw_md = Path(results_dir) / 'raw.md'
+    timestamp_line = None
+    if raw_md.exists():
+        try:
+            with open(raw_md, 'r') as rf:
+                lines = [l.rstrip('\n') for l in rf]
+            for i, line in enumerate(lines):
+                if line.strip().lower().startswith('## timestamp'):
+                    j = i + 1
+                    while j < len(lines) and lines[j].strip() == '':
+                        j += 1
+                    if j < len(lines):
+                        timestamp_line = lines[j].strip()
+                    break
+        except Exception:
+            timestamp_line = None
 
-## Requests Per Second
+    ts_block = f"Timestamp: `{timestamp_line}`\n\n" if timestamp_line else ""
+
+    content = f"""# Latest Results
+\n{ts_block}## Requests Per Second
 ![Requests Per Second](rps.png)
-
-## API Memory Usage
+\n## API Memory Usage
 ![API Memory MB](memory.png)
-
-## P99 Response Time
+\n## P99 Response Time
 ![P99 Response Time](p99.png)
-
-## API Threads
+\n## API Threads
 ![API Threads](threads.png)
-
-
----
+\n---
 *Graphs generated from benchmark results. See raw.md for detailed data.*
 """
 

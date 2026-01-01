@@ -1,5 +1,7 @@
 # Latest Results
 
+Timestamp: `Thu Jan 1 12:25:14 UTC 2026`
+
 ## Requests Per Second
 ![Requests Per Second](rps.png)
 
@@ -11,7 +13,6 @@
 
 ## API Threads
 ![API Threads](threads.png)
-
 
 ---
 *Graphs generated from benchmark results. See raw.md for detailed data.*
