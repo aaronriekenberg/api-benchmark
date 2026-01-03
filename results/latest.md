@@ -5,6 +5,9 @@ Timestamp: `Sat Jan 3 11:32:43 UTC 2026`
 ## Requests Per Second
 ![Requests Per Second](rps.png)
 
+## Success Rate
+![Success Rate](success_rate.png)
+
 ## API Memory Usage
 ![API Memory MB](memory.png)
 
