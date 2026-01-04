@@ -316,14 +316,14 @@ def generate_latest_md(results_dir='results'):
     content = f"""# Latest Results
 \n{ts_block}## Requests Per Second
 ![Requests Per Second](rps.png)
-\n## Success Rate
-![Success Rate](success_rate.png)
 \n## API Memory Usage
 ![API Memory MB](memory.png)
 \n## P99 Response Time
 ![P99 Response Time](p99.png)
 \n## API Threads
 ![API Threads](threads.png)
+\n## Success Rate
+![Success Rate](success_rate.png)
 \n---
 *Graphs generated from benchmark results. See raw.md for detailed data.*
 """
