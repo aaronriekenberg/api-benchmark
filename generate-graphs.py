@@ -53,6 +53,7 @@ def parse_markdown_table(raw_file):
         
         try:
             success_rate = float(parts[2].strip().rstrip('%'))
+            test_seconds = float(parts[3].strip())
             rps = float(parts[4].strip())
             p99 = float(parts[6].strip())
             memory = float(parts[8].strip())
@@ -62,6 +63,7 @@ def parse_markdown_table(raw_file):
                 'api': test_name,
                 'conns': http_conns,
                 'success_rate': success_rate,
+                'test_seconds': test_seconds,
                 'rps': rps,
                 'p99': p99,
                 'memory': memory,
@@ -121,6 +123,60 @@ def generate_rps_graph(results, output_file):
     ax.set_xticks(x)
     ax.set_xticklabels(apis, fontsize=11)
     ax.legend(fontsize=10, loc='upper right')
+    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    
+    plt.tight_layout()
+    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Generated {output_file}")
+
+
+def generate_test_seconds_graph(results, output_file):
+    """Generate grouped bar graph for test seconds."""
+    # Get unique APIs preserving order from results, and connection levels
+    apis = []
+    seen = set()
+    for r in results:
+        if r['api'] not in seen:
+            apis.append(r['api'])
+            seen.add(r['api'])
+    conns = sorted(set(r['conns'] for r in results))
+    
+    fig, ax = plt.subplots(figsize=(14, 6))
+    
+    x = range(len(apis))
+    bar_width = 0.25
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
+    
+    # Create bars for each connection level
+    for i, conn in enumerate(conns):
+        test_values = []
+        for api in apis:
+            matching = [r for r in results if r['api'] == api and r['conns'] == conn]
+            if matching:
+                test_values.append(matching[0]['test_seconds'])
+            else:
+                test_values.append(0)
+        
+        offset = (i - len(conns) / 2 + 0.5) * bar_width
+        bars = ax.bar([xi + offset for xi in x], test_values, bar_width, 
+                      label=f'{conn} connections', color=colors[i], 
+                      edgecolor='black', linewidth=1)
+        
+        # Add value labels on bars
+        for bar, value in zip(bars, test_values):
+            if value > 0:
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height,
+                        f'{value:.1f}',
+                        ha='center', va='bottom', fontsize=8, fontweight='bold')
+    
+    ax.set_xlabel('API', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Test Seconds', fontsize=12, fontweight='bold')
+    ax.set_title('API Benchmark - Test Duration', fontsize=14, fontweight='bold')
+    ax.set_xticks(x)
+    ax.set_xticklabels(apis, fontsize=11)
+    ax.legend(fontsize=10, loc='upper left')
     ax.grid(axis='y', alpha=0.3, linestyle='--')
     
     plt.tight_layout()
@@ -316,6 +372,8 @@ def generate_latest_md(results_dir='results'):
     content = f"""# Latest Results
 \n{ts_block}## Requests Per Second
 ![Requests Per Second](rps.png)
+\n## Test Duration
+![Test Duration](test_seconds.png)
 \n## API Memory Usage
 ![API Memory MB](memory.png)
 \n## P99 Response Time
@@ -417,6 +475,7 @@ def main():
     # Generate graphs
     print("\nGenerating graphs...")
     generate_rps_graph(results, str(results_dir / 'rps.png'))
+    generate_test_seconds_graph(results, str(results_dir / 'test_seconds.png'))
     generate_success_rate_graph(results, str(results_dir / 'success_rate.png'))
     generate_memory_graph(results, str(results_dir / 'memory.png'))
     generate_threads_graph(results, str(results_dir / 'threads.png'))

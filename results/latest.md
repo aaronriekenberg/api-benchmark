@@ -5,6 +5,9 @@ Timestamp: `Sun Jan 4 14:16:57 UTC 2026`
 ## Requests Per Second
 ![Requests Per Second](rps.png)
 
+## Test Duration
+![Test Duration](test_seconds.png)
+
 ## API Memory Usage
 ![API Memory MB](memory.png)
 
