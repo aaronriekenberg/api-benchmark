@@ -58,6 +58,7 @@ def parse_markdown_table(raw_file):
             p99 = float(parts[6].strip())
             memory = float(parts[8].strip())
             threads = int(parts[10].strip())
+            processes = int(parts[11].strip()) if len(parts) > 11 else 1
             
             results.append({
                 'api': test_name,
@@ -67,7 +68,8 @@ def parse_markdown_table(raw_file):
                 'rps': rps,
                 'p99': p99,
                 'memory': memory,
-                'threads': threads
+                'threads': threads,
+                'processes': processes
             })
         except (ValueError, IndexError) as e:
             print(f"Warning: Could not parse row: {line}")
@@ -380,6 +382,8 @@ def generate_latest_md(results_dir='results'):
 ![P99 Response Time](p99.png)
 \n## API Threads
 ![API Threads](threads.png)
+\n## API Processes
+![API Processes](api_processes.png)
 \n## Success Rate
 ![Success Rate](success_rate.png)
 \n---
@@ -448,6 +452,58 @@ def generate_threads_graph(results, output_file):
     print(f"Generated {output_file}")
 
 
+def generate_api_processes_graph(results, output_file):
+    """Generate grouped bar graph for API process count."""
+    # Get unique APIs preserving order from results, and connection levels
+    apis = []
+    seen = set()
+    for r in results:
+        if r['api'] not in seen:
+            apis.append(r['api'])
+            seen.add(r['api'])
+    conns = sorted(set(r['conns'] for r in results))
+    
+    fig, ax = plt.subplots(figsize=(14, 6))
+    
+    x = range(len(apis))
+    bar_width = 0.25
+    colors = ['#FF6B6B', '#4ECDC4', '#45B7D1']
+    
+    # Create bars for each connection level
+    for i, conn in enumerate(conns):
+        processes_values = []
+        for api in apis:
+            matching = [r for r in results if r['api'] == api and r['conns'] == conn]
+            if matching:
+                processes_values.append(matching[0]['processes'])
+            else:
+                processes_values.append(0)
+        
+        offset = (i - len(conns) / 2 + 0.5) * bar_width
+        bars = ax.bar([xi + offset for xi in x], processes_values, bar_width, 
+                      label=f'{conn} connections', color=colors[i], 
+                      edgecolor='black', linewidth=1)
+        
+        # Add value labels on bars
+        for bar, value in zip(bars, processes_values):
+            if value > 0:
+                height = bar.get_height()
+                ax.text(bar.get_x() + bar.get_width()/2., height,
+                        f'{value:.0f}',
+                        ha='center', va='bottom', fontsize=8, fontweight='bold')
+    
+    ax.set_xlabel('API', fontsize=12, fontweight='bold')
+    ax.set_ylabel('Process Count', fontsize=12, fontweight='bold')
+    ax.set_title('API Benchmark - Process Usage', fontsize=14, fontweight='bold')
+    ax.set_xticks(x)
+    ax.set_xticklabels(apis, fontsize=11)
+    ax.legend(fontsize=10, loc='upper left')
+    ax.grid(axis='y', alpha=0.3, linestyle='--')
+    
+    plt.tight_layout()
+    plt.savefig(output_file, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"Generated {output_file}")
 
 
 
@@ -479,6 +535,7 @@ def main():
     generate_success_rate_graph(results, str(results_dir / 'success_rate.png'))
     generate_memory_graph(results, str(results_dir / 'memory.png'))
     generate_threads_graph(results, str(results_dir / 'threads.png'))
+    generate_api_processes_graph(results, str(results_dir / 'api_processes.png'))
     generate_p99_graph(results, str(results_dir / 'p99.png'))
     
     # Generate latest.md

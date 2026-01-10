@@ -1,6 +1,6 @@
 # Latest Results
 
-Timestamp: `Sat Jan 10 11:06:27 UTC 2026`
+Timestamp: `Sat Jan 10 18:47:48 UTC 2026`
 
 ## Requests Per Second
 ![Requests Per Second](rps.png)
@@ -16,6 +16,9 @@ Timestamp: `Sat Jan 10 11:06:27 UTC 2026`
 
 ## API Threads
 ![API Threads](threads.png)
+
+## API Processes
+![API Processes](api_processes.png)
 
 ## Success Rate
 ![Success Rate](success_rate.png)
