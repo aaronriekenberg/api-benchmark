@@ -89,15 +89,18 @@ for NUM_CONNECTIONS in 200 400 800; do
     PARENT_THREADS=$(ps -eLf -q $PARENT_PID | grep -v PID | wc -l)
     echo "PARENT_THREADS=$PARENT_THREADS"
     API_THREADS=$((API_THREADS+PARENT_THREADS))
+    echo "API_THREADS=$API_THREADS"
 
     PARENT_RSS_KB=$(ps -eo pid,user,rss,time -q $PARENT_PID | tail -1 | awk '{print $3}' )
     echo "PARENT_RSS_KB=$PARENT_RSS_KB"
     RSS_KB=$((RSS_KB+PARENT_RSS_KB))
+    echo "RSS_KB=$RSS_KB"
 
     PARENT_CPU_TIME=$(ps -eo pid,user,rss,time -q $PARENT_PID | tail -1 | awk '{print $4}' )
     echo "PARENT_CPU_TIME=$PARENT_CPU_TIME"
     # sum CPU times
     TOTAL_CPU_TIME=$(./sum-times.sh $TOTAL_CPU_TIME $PARENT_CPU_TIME)
+    echo "TOTAL_CPU_TIME=$TOTAL_CPU_TIME"
 
     RSS_MB=$(bc <<< "scale=1; $RSS_KB / 1000")
     echo "RSS_MB=$RSS_MB"
