@@ -18,6 +18,9 @@ for NUM_CONNECTIONS in 200 400 800; do
 
     sleep 1
 
+    echo "pstree -pa $API_PID"
+    pstree -pa $API_PID
+
     echo "$TEST_NAME running PID $API_PID"
 
     rm -f oha_output.json
@@ -63,6 +66,9 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo "ps -o pid,cputime,nlwp,rss,cmd -q $API_PID"
     ps -o pid,cputime,nlwp,rss,cmd -q $API_PID
 
+    echo "ps -o pid,cputime,nlwp,rss,cmd --ppid $API_PID"
+    ps -o pid,cputime,nlwp,rss,cmd --ppid $API_PID
+
     RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
     echo "RSS_KB=$RSS_KB"
     RSS_MB=$(bc <<< "scale=1; $RSS_KB / 1000")
@@ -71,8 +77,11 @@ for NUM_CONNECTIONS in 200 400 800; do
     CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
     echo "CPU_TIME=$CPU_TIME"
 
-    echo "before kill $API_PID ps -ef"
-    ps -ef
+    # kill child pids
+    for CHILD_PID in $(ps --no-headers -o pid --ppid $API_PID); do
+        echo "kill child pid $CHILD_PID"
+        kill $CHILD_PID
+    done
 
     echo kill $API_PID
     kill $API_PID
