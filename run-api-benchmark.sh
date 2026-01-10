@@ -18,9 +18,6 @@ for NUM_CONNECTIONS in 200 400 800; do
 
     sleep 1
 
-    echo "pstree -pa $API_PID"
-    pstree -pa $API_PID
-
     echo "$TEST_NAME running PID $API_PID"
 
     rm -f oha_output.json
@@ -57,25 +54,53 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo ps -eLf -q $API_PID
     ps -eLf -q $API_PID
 
-    API_THREADS=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
-    echo "API_THREADS=$API_THREADS"
-
-    echo "pstree -pa $API_PID"
+    echo pstree -spa $API_PID
     pstree -pa $API_PID
 
-    echo "ps -o pid,cputime,nlwp,rss,cmd -q $API_PID"
-    ps -o pid,cputime,nlwp,rss,cmd -q $API_PID
+    API_THREADS=0
+    API_PROCESSES=0
+    RSS_KB=0
+    TOTAL_CPU_TIME="00:00:00"
 
-    echo "ps -o pid,cputime,nlwp,rss,cmd --ppid $API_PID"
-    ps -o pid,cputime,nlwp,rss,cmd --ppid $API_PID
+    for CHILD_PID in $(ps --no-headers -o pid --ppid $API_PID); do
+        echo "CHILD_PID=$CHILD_PID"
+        API_PROCESSES=$((API_PROCESSES+1))
 
-    RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
-    echo "RSS_KB=$RSS_KB"
+        echo "ps --no-headers -o pid,cputime,nlwp,rss,cmd -q $CHILD_PID"
+        ps --no-headers -o pid,cputime,nlwp,rss,cmd -q $CHILD_PID
+
+        CHILD_THREADS=$(ps -eLf -q $CHILD_PID | grep -v PID | wc -l)
+        echo "CHILD_THREADS=$CHILD_THREADS"
+        API_THREADS=$((API_THREADS+CHILD_THREADS))
+
+        CHILD_RSS_KB=$(ps -eo pid,user,rss,time -q $CHILD_PID | tail -1 | awk '{print $3}' )
+        echo "CHILD_RSS_KB=$CHILD_RSS_KB"
+        RSS_KB=$((RSS_KB+CHILD_RSS_KB))
+
+        CHILD_CPU_TIME=$(ps -eo pid,user,rss,time -q $CHILD_PID | tail -1 | awk '{print $4}' )
+        echo "CHILD_CPU_TIME=$CHILD_CPU_TIME"
+        # sum CPU times
+        TOTAL_CPU_TIME=$(./sum-times.sh $TOTAL_CPU_TIME $CHILD_CPU_TIME)
+    done
+
+    PARENT_PID=$API_PID
+    echo "PARENT_PID=$PARENT_PID"
+
+    PARENT_THREADS=$(ps -eLf -q $PARENT_PID | grep -v PID | wc -l)
+    echo "PARENT_THREADS=$PARENT_THREADS"
+    API_THREADS=$((API_THREADS+PARENT_THREADS))
+
+    PARENT_RSS_KB=$(ps -eo pid,user,rss,time -q $PARENT_PID | tail -1 | awk '{print $3}' )
+    echo "PARENT_RSS_KB=$PARENT_RSS_KB"
+    RSS_KB=$((RSS_KB+PARENT_RSS_KB))
+
+    PARENT_CPU_TIME=$(ps -eo pid,user,rss,time -q $PARENT_PID | tail -1 | awk '{print $4}' )
+    echo "PARENT_CPU_TIME=$PARENT_CPU_TIME"
+    # sum CPU times
+    TOTAL_CPU_TIME=$(./sum-times.sh $TOTAL_CPU_TIME $PARENT_CPU_TIME)
+
     RSS_MB=$(bc <<< "scale=1; $RSS_KB / 1000")
     echo "RSS_MB=$RSS_MB"
-
-    CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
-    echo "CPU_TIME=$CPU_TIME"
 
     # kill child pids
     for CHILD_PID in $(ps --no-headers -o pid --ppid $API_PID); do
@@ -91,7 +116,7 @@ for NUM_CONNECTIONS in 200 400 800; do
     echo "after kill $API_PID ps -ef"
     ps -ef
 
-    echo "| $TEST_NAME | $NUM_CONNECTIONS | $SUCCESS_RATE | $TEST_SECONDS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS |" >> $OUTPUT_FILE
+    echo "| $TEST_NAME | $NUM_CONNECTIONS | $SUCCESS_RATE | $TEST_SECONDS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS | $API_PROCESSES |" >> $OUTPUT_FILE
 
     sleep 1
 
