@@ -12,6 +12,11 @@ for time_str in "$@"; do
     minutes=$(echo "$time_str" | cut -d: -f2)
     seconds=$(echo "$time_str" | cut -d: -f3)
     
+    # Remove leading zeros to prevent octal interpretation
+    hours=$((10#$hours))
+    minutes=$((10#$minutes))
+    seconds=$((10#$seconds))
+
     # Convert to total seconds
     time_seconds=$((hours * 3600 + minutes * 60 + seconds))
     total_seconds=$((total_seconds + time_seconds))

@@ -11,6 +11,9 @@ Timestamp: `Sat Jan 10 18:47:48 UTC 2026`
 ## API Memory Usage
 ![API Memory MB](memory.png)
 
+## API CPU Time
+![API CPU Time](cpu_time.png)
+
 ## P99 Response Time
 ![P99 Response Time](p99.png)
 
