@@ -9,67 +9,67 @@ echo "OUTPUT_FILE=$OUTPUT_FILE"
 
 
 # build rust
-echo "rustup update"
-rustup update
-cd rust-api
-echo "$(date) before cargo build"
-cargo build --release
-echo "$(date) after cargo build"
-cd -
-echo "pwd = $(pwd)"
+# echo "rustup update"
+# rustup update
+# cd rust-api
+# echo "$(date) before cargo build"
+# cargo build --release
+# echo "$(date) after cargo build"
+# cd -
+# echo "pwd = $(pwd)"
 
-# run rust benchmarks
-export API_COMMAND='./rust-api/target/release/rust-api'
-export TEST_NAME=rust
-./run-api-benchmark.sh
-
-
-# build go
-cd go-api
-echo "$(date) before go build"
-go build
-echo "$(date) after go build"
-cd -
-echo "pwd = $(pwd)"
-
-# run go benchmarks
-export API_COMMAND='./go-api/go-api'
-export TEST_NAME=go
-./run-api-benchmark.sh
+# # run rust benchmarks
+# export API_COMMAND='./rust-api/target/release/rust-api'
+# export TEST_NAME=rust
+# ./run-api-benchmark.sh
 
 
-# build kotlin
-echo "java --version"
-java --version
+# # build go
+# cd go-api
+# echo "$(date) before go build"
+# go build
+# echo "$(date) after go build"
+# cd -
+# echo "pwd = $(pwd)"
 
-cd kotlin-api
-echo "$(date) before kotlin-api gradle build"
-
-./gradlew clean build
-cd build/distributions
-tar xvf kotlin-api.tar
-cd ../../..
-
-echo "killall java"
-killall java
-
-echo "$(date) after gradle build"
-echo "pwd = $(pwd)"
-
-# run kotlin benchmarks
-export API_COMMAND='./kotlin-api/build/distributions/kotlin-api/bin/kotlin-api'
-export TEST_NAME=kotlin
-./run-api-benchmark.sh
+# # run go benchmarks
+# export API_COMMAND='./go-api/go-api'
+# export TEST_NAME=go
+# ./run-api-benchmark.sh
 
 
-# node api
-echo "node --version"
-node --version
+# # build kotlin
+# echo "java --version"
+# java --version
 
-# run node benchmarks
-export API_COMMAND='node node-api/server.mjs'
-export TEST_NAME=node
-./run-api-benchmark.sh
+# cd kotlin-api
+# echo "$(date) before kotlin-api gradle build"
+
+# ./gradlew clean build
+# cd build/distributions
+# tar xvf kotlin-api.tar
+# cd ../../..
+
+# echo "killall java"
+# killall java
+
+# echo "$(date) after gradle build"
+# echo "pwd = $(pwd)"
+
+# # run kotlin benchmarks
+# export API_COMMAND='./kotlin-api/build/distributions/kotlin-api/bin/kotlin-api'
+# export TEST_NAME=kotlin
+# ./run-api-benchmark.sh
+
+
+# # node api
+# echo "node --version"
+# node --version
+
+# # run node benchmarks
+# export API_COMMAND='node node-api/server.mjs'
+# export TEST_NAME=node
+# ./run-api-benchmark.sh
 
 
 # python api

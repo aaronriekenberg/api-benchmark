@@ -57,8 +57,11 @@ for NUM_CONNECTIONS in 200 400 800; do
     API_THREADS=$(ps -eLf -q $API_PID | grep -v PID | wc -l)
     echo "API_THREADS=$API_THREADS"
 
-    echo ps -eo pid,user,rss,time -q $API_PID
-    ps -eo pid,user,rss,time -q $API_PID
+    echo "pstree -pa $API_PID"
+    pstree -pa $API_PID
+
+    echo "ps -o pid,cputime,nlwp,rss,cmd -q $API_PID"
+    ps -o pid,cputime,nlwp,rss,cmd -q $API_PID
 
     RSS_KB=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $3}' )
     echo "RSS_KB=$RSS_KB"
@@ -68,8 +71,16 @@ for NUM_CONNECTIONS in 200 400 800; do
     CPU_TIME=$(ps -eo pid,user,rss,time -q $API_PID | tail -1 | awk '{print $4}' )
     echo "CPU_TIME=$CPU_TIME"
 
+    echo "before kill $API_PID ps -ef"
+    ps -ef
+
     echo kill $API_PID
     kill $API_PID
+
+    sleep 1
+
+    echo "after kill $API_PID ps -ef"
+    ps -ef
 
     echo "| $TEST_NAME | $NUM_CONNECTIONS | $SUCCESS_RATE | $TEST_SECONDS | $RPS | $REQUEST_P50 | $REQUEST_P99 | $REQUEST_P999 | $RSS_MB | $CPU_TIME | $API_THREADS |" >> $OUTPUT_FILE
 
