@@ -20,6 +20,9 @@ for NUM_CONNECTIONS in 200 400 800; do
 
     echo "$TEST_NAME running PID $API_PID"
 
+    echo pstree -pa $API_PID
+    pstree -pa $API_PID
+
     rm -f oha_output.json
     echo "./oha --http-version=1.1 -n 1000000 -c $NUM_CONNECTIONS --no-tui --output-format json 'http://localhost:8080/test'"
     ./oha --http-version=1.1 -n 1000000 -c $NUM_CONNECTIONS --no-tui --output-format json 'http://localhost:8080/test' | tee oha_output.json
@@ -51,12 +54,6 @@ for NUM_CONNECTIONS in 200 400 800; do
     REQUEST_P999=$(bc <<< "scale=4; $REQUEST_P999 * 1000 / 1")
     echo "REQUEST_P999 = $REQUEST_P999"
 
-    echo ps -eLf -q $API_PID
-    ps -eLf -q $API_PID
-
-    echo pstree -spa $API_PID
-    pstree -pa $API_PID
-
     API_THREADS=0
     API_PROCESSES=0
     RSS_KB=0
@@ -85,6 +82,9 @@ for NUM_CONNECTIONS in 200 400 800; do
 
     PARENT_PID=$API_PID
     echo "PARENT_PID=$PARENT_PID"
+
+    echo "ps --no-headers -o pid,cputime,nlwp,rss,cmd -q $PARENT_PID"
+    ps --no-headers -o pid,cputime,nlwp,rss,cmd -q $PARENT_PID
 
     PARENT_THREADS=$(ps -eLf -q $PARENT_PID | grep -v PID | wc -l)
     echo "PARENT_THREADS=$PARENT_THREADS"
