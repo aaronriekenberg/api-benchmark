@@ -87,6 +87,7 @@ for NUM_CONNECTIONS in 200 400 800; do
     ps --no-headers -o pid,cputime,nlwp,rss,cmd -q $PARENT_PID
 
     API_PROCESSES=$((API_PROCESSES+1))
+    echo "API_PROCESSES=$API_PROCESSES"
 
     PARENT_THREADS=$(ps -eLf -q $PARENT_PID | grep -v PID | wc -l)
     echo "PARENT_THREADS=$PARENT_THREADS"
