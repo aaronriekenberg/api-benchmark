@@ -4,6 +4,10 @@ set -e
 
 echo "begin run-api-benchmark.sh"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$REPO_ROOT"
+
 lscpu
 lsmem
 
@@ -77,7 +81,7 @@ for NUM_CONNECTIONS in 200 400 800; do
         CHILD_CPU_TIME=$(ps -eo pid,user,rss,time -q $CHILD_PID | tail -1 | awk '{print $4}' )
         echo "CHILD_CPU_TIME=$CHILD_CPU_TIME"
         # sum CPU times
-        TOTAL_CPU_TIME=$(./sum-times.sh $TOTAL_CPU_TIME $CHILD_CPU_TIME)
+        TOTAL_CPU_TIME=$($SCRIPT_DIR/sum-times.sh $TOTAL_CPU_TIME $CHILD_CPU_TIME)
     done
 
     PARENT_PID=$API_PID
@@ -102,7 +106,7 @@ for NUM_CONNECTIONS in 200 400 800; do
     PARENT_CPU_TIME=$(ps -eo pid,user,rss,time -q $PARENT_PID | tail -1 | awk '{print $4}' )
     echo "PARENT_CPU_TIME=$PARENT_CPU_TIME"
     # sum CPU times
-    TOTAL_CPU_TIME=$(./sum-times.sh $TOTAL_CPU_TIME $PARENT_CPU_TIME)
+    TOTAL_CPU_TIME=$($SCRIPT_DIR/sum-times.sh $TOTAL_CPU_TIME $PARENT_CPU_TIME)
     echo "TOTAL_CPU_TIME=$TOTAL_CPU_TIME"
 
     RSS_MB=$(bc <<< "scale=1; $RSS_KB / 1000")

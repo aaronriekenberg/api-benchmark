@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Sum CPU times in HH:MM:SS format
-# Usage: ./sum-times.sh HH:MM:SS [HH:MM:SS ...]
-# Example: ./sum-times.sh 00:01:30 00:02:15
+# Usage: ./scripts/sum-times.sh HH:MM:SS [HH:MM:SS ...]
+# Example: ./scripts/sum-times.sh 00:01:30 00:02:15
 
 total_seconds=0
 

@@ -12,6 +12,9 @@ from collections import defaultdict
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+RESULTS_DIR = BASE_DIR / 'results'
+
 # Parse the markdown table
 def parse_markdown_table(raw_file):
     """Parse benchmark results from raw.md markdown table."""
@@ -414,12 +417,13 @@ def generate_p99_graph(results, output_file):
     print(f"Generated {output_file}")
 
 
-def generate_latest_md(results_dir='results'):
+def generate_latest_md(results_dir=RESULTS_DIR):
     """Generate latest.md with links to graph images and copy timestamp from raw.md."""
-    latest_md = Path(results_dir) / 'latest.md'
+    results_dir = Path(results_dir)
+    latest_md = results_dir / 'latest.md'
 
     # read timestamp from raw.md (next non-empty line after '## Timestamp')
-    raw_md = Path(results_dir) / 'raw.md'
+    raw_md = results_dir / 'raw.md'
     timestamp_line = None
     if raw_md.exists():
         try:
@@ -577,7 +581,7 @@ def generate_api_processes_graph(results, output_file):
 
 
 def main():
-    results_dir = Path('results')
+    results_dir = RESULTS_DIR
     raw_file = results_dir / 'raw.md'
     
     if not raw_file.exists():

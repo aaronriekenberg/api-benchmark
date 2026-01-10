@@ -4,6 +4,10 @@ set -e
 
 echo "begin run-benchmarks.sh"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$REPO_ROOT"
+
 export OUTPUT_FILE=results/raw.md
 echo "OUTPUT_FILE=$OUTPUT_FILE"
 
@@ -21,7 +25,7 @@ echo "pwd = $(pwd)"
 # run rust benchmarks
 export API_COMMAND='./rust-api/target/release/rust-api'
 export TEST_NAME=rust
-./run-api-benchmark.sh
+$SCRIPT_DIR/run-api-benchmark.sh
 
 
 # build go
@@ -35,7 +39,7 @@ echo "pwd = $(pwd)"
 # run go benchmarks
 export API_COMMAND='./go-api/go-api'
 export TEST_NAME=go
-./run-api-benchmark.sh
+$SCRIPT_DIR/run-api-benchmark.sh
 
 
 # build kotlin
@@ -59,7 +63,7 @@ echo "pwd = $(pwd)"
 # run kotlin benchmarks
 export API_COMMAND='./kotlin-api/build/distributions/kotlin-api/bin/kotlin-api'
 export TEST_NAME=kotlin
-./run-api-benchmark.sh
+$SCRIPT_DIR/run-api-benchmark.sh
 
 
 # node api
@@ -69,7 +73,7 @@ node --version
 # run node benchmarks
 export API_COMMAND='node node-api/server.mjs'
 export TEST_NAME=node
-./run-api-benchmark.sh
+$SCRIPT_DIR/run-api-benchmark.sh
 
 
 # python api
@@ -83,6 +87,6 @@ pip install tornado
 # run python benchmarks
 export API_COMMAND='python python-api/server.py'
 export TEST_NAME=python
-./run-api-benchmark.sh
+$SCRIPT_DIR/run-api-benchmark.sh
 
 echo "end run-benchmarks.sh"

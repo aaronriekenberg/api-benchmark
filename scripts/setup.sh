@@ -4,6 +4,10 @@ set -e
 
 echo "begin setup.sh"
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+cd "$REPO_ROOT"
+
 echo "wget https://github.com/hatoo/oha/releases/latest/download/oha-linux-amd64"
 wget https://github.com/hatoo/oha/releases/latest/download/oha-linux-amd64
 mv oha-linux-amd64 oha
