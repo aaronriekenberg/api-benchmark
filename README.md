@@ -8,8 +8,9 @@ Consider this an upper bound on the performance of each language/framework, addi
 * [latest.md](https://github.com/aaronriekenberg/million-hello-challenge/blob/main/results/latest.md)
 
 # Observations:
-* More than 10x difference in [Requests per Second](https://github.com/aaronriekenberg/million-hello-challenge/blob/main/results/rps.png) from first to last.
-* [Kotlin/JVM memory usage](https://github.com/aaronriekenberg/million-hello-challenge/blob/main/results/memory.png) is 10x to 60x larger compared to rust and go, 5x larger than node and python.
+* More than 10x difference in [Requests per Second](results/rps.png) from first to last.
+* Rust has the highest performance and lowest resource usage in all measurements.  Rust can do more than [100K RPS](results/rps.png) with [5 threads](results/threads.png) and [9MB to 20MB memory usage](results/memory.png).  Rust also has the best [p99 response times](results/p99.png).
+* [Kotlin/JVM memory usage](results/memory.png) is 10x to 60x larger compared to rust and go, 5x larger than node and python.
 
 # API Servers in this repo:
 * [rust-api](https://github.com/aaronriekenberg/million-hello-challenge/tree/main/rust-api) using [axum](https://github.com/tokio-rs/axum)
