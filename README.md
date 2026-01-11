@@ -1,6 +1,6 @@
 # million-hello-challenge
 
-Benchmarking 1 million HTTP HelloWorld requests to rust/go/kotlin/node/python APIs in GitHub Actions.
+Benchmarking the performance of Rust, Go, Kotlin, Node.js, and Python HTTP APIs using one million Hello World requests in GitHub Actions.
 
 # Latest results:
 * [latest.md](https://github.com/aaronriekenberg/million-hello-challenge/blob/main/results/latest.md)
