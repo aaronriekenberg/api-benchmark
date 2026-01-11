@@ -10,7 +10,7 @@ Benchmarking 1 million HTTP requests to rust/go/kotlin/node/python REST APIs in 
 * [go-api](https://github.com/aaronriekenberg/api-benchmark/tree/main/go-api) using builtin `net/http`
 * [kotlin-api](https://github.com/aaronriekenberg/api-benchmark/tree/main/kotlin-api) using [http4k](https://www.http4k.org) with [Helidon](https://helidon.io) server using virutal threads, Java 25.
 * [node-api](https://github.com/aaronriekenberg/api-benchmark/tree/main/node-api) using builtin `node:http` server.
-* [python-api](https://github.com/aaronriekenberg/api-benchmark/tree/main/python-api) using [tornado](https://www.tornadoweb.org/en/stable/) server
+* [python-api](https://github.com/aaronriekenberg/api-benchmark/tree/main/python-api) using [tornado](https://www.tornadoweb.org/en/stable/) server, using [pre-forking](https://www.tornadoweb.org/en/stable/process.html#tornado.process.fork_processes) to use all available CPUs.
 
 # Benchmark tests:
 * Use [oha](https://crates.io/crates/oha) to make 1 million HTTP requests
