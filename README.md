@@ -15,4 +15,4 @@ Benchmarking 1 million HTTP HelloWorld requests to rust/go/kotlin/node/python se
 # Benchmark tests:
 * Use [oha](https://crates.io/crates/oha) to make 1 million HTTP requests
 * Using HTTP 1.1 with varying number of connections.
-* At API measure response times (p50, p99, p99.9), memory usage, cpu usage, threads created
+* At server measure response times (p50, p99, p99.9), memory usage, cpu usage, threads created, processes created.
