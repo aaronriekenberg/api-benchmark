@@ -9,8 +9,7 @@ Consider this an upper bound on the performance of each language/framework, addi
 
 # Observations:
 * More than 10x difference in [Requests per Second](https://github.com/aaronriekenberg/million-hello-challenge/blob/main/results/rps.png) from first to last.
-* [Kotlin/JVM memory usage](results/memory.png) is 10x to 20x larger compared to rust and go, 5x larger than node and python.
-* Performance is inversely proportional to language/framework popularity.
+* [Kotlin/JVM memory usage](https://github.com/aaronriekenberg/million-hello-challenge/blob/main/results/memory.png) is 10x to 60x larger compared to rust and go, 5x larger than node and python.
 
 # API Servers in this repo:
 * [rust-api](https://github.com/aaronriekenberg/million-hello-challenge/tree/main/rust-api) using [axum](https://github.com/tokio-rs/axum)
