@@ -5,7 +5,7 @@ Benchmarking 1 million HTTP HelloWorld requests to rust/go/kotlin/node/python AP
 # Latest results:
 * [latest.md](https://github.com/aaronriekenberg/million-hello-challenge/blob/main/results/latest.md)
 
-# Server APIs:
+# API Servers:
 * [rust-api](https://github.com/aaronriekenberg/million-hello-challenge/tree/main/rust-api) using [axum](https://github.com/tokio-rs/axum)
 * [go-api](https://github.com/aaronriekenberg/million-hello-challenge/tree/main/go-api) using builtin `net/http`
 * [kotlin-api](https://github.com/aaronriekenberg/million-hello-challenge/tree/main/kotlin-api) using [http4k](https://www.http4k.org) with [Helidon](https://helidon.io) server using virutal threads, Java 25.
