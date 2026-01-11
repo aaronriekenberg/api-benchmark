@@ -1,6 +1,6 @@
-# api-benchmark
+# million-hello-challenge
 
-Benchmarking 1 million HTTP requests to rust/go/kotlin/node/python REST APIs in GitHub actions. 
+Benchmarking 1 million HTTP HelloWorld requests to rust/go/kotlin/node/python APIs in GitHub Actions.
 
 # Latest results:
 * [latest.md](https://github.com/aaronriekenberg/api-benchmark/blob/main/results/latest.md)
